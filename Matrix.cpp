@@ -3,17 +3,6 @@ using namespace std;
 
 const long long mod = 1e9 + 7;
 
-long long powmod(long long base, long long exp) {
-	base %= mod;
-	long long result = 1;
-	while (exp > 0) {
-		if (exp & 1) result = (result * base) % mod;
-		base = (base * base) % mod;
-		exp >>= 1;
-	}
-  	return result;
-}
-
 template <typename T>
 class Matrix{
 	vector< vector<T> > M;
@@ -102,36 +91,4 @@ ostream& operator<<(ostream &out, Matrix<T> &M){
 		for(long long j = 0; j<M[i].size(); ++j) out << M[i][j] << ' ';
 	}
 	return out;
-}
-
-long long main(){
-
-	vector< vector<long long> > I1 = {{0,1,0}, {0,0,1},{1,0,0}}, I2 = {{0,1,0}, {0,0,1}, {0,1,0}};
-	vector< vector<long long> > I3 = {{0,1,0}, {0,0,1}, {0,0,1}}, B1 = {{1},{0},{0}}, B2 = {{0},{1},{0}}, B3 = {{0},{0},{1}};
-
-	Matrix<long long> I1_(I1), I2_(I2), I3_(I3), B1_(B1), B2_(B2), B3_(B3);
-
-	long long n, f1, f2, f3, c; cin >> n >> f1 >> f2 >> f3 >> c;
-
-	I1 = I1^n; I2 = I2^n; I3 = I3^n;
-	Matrix<long long> F1 = I1 * B1, F2 = I2 * B2, F3 = I3 * B3;
-	long long expf1 = F1[2][0], expf2 = F2[2][0], expf3 = F3[2][0];
-	long long r1 = binpow(f1, expf1), r2 = binpow(f2, expf2), r3 = binpow(f3, expf3);
-	long long r = (((r1 * r2) % mod) * r3) % mod;
-
-
-	vector< vector<long long> > Xc_ = {{1,0,0,0,0}, {1,1,0,0,0}, {0,0,0,1,0}, {0,0,0,0,1}, {1,1,1,1,1}};
-	vector< vector<long long> > C_ = {{2},{0},{0},{0},{0}};
-
-	Matrix<long long> Xc(Xc_), C(C_)
-
-	Xc = Xc ^ (n - 3);
-	C = C * Xc;
-
-
-	long long expc = C[4][0];
-	long long ec = binpow(c, expc);
-	r = (r * ec) % mod;
-	cout << r << '\n';
-	return 0;
 }
