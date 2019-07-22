@@ -98,28 +98,3 @@ vector< Point > convex_hull(vector< Point > pts){
 
     return ret;
 }
-
-int main(){
-    int t; cin >> t;
-    for(int c = 1; c<=t; c++){
-        vector< Point > vs;
-        for(int i = 0; i<4; i++){
-            double x, y; scanf("%lf %lf", &x, &y);
-            vs.emplace_back(x,y);
-        }
-        Line L1(vs[0], vs[2]);
-        Point P = (vs[0] + vs[2])/2.0;
-        Line L1P = L1.perpThrough(P);
-        Line L2(vs[1], vs[3]);
-        Point Q = (vs[1] + vs[3])/2.0;
-        Line L2P = L2.perpThrough(Q);
-        Point ans(1,1); 
-        intersect_L(L1P, L2P, ans)
-        if(ans.x == -0.0) ans.x = 0.0;
-        if(ans.y == -0.0) ans.y = 0.0;
-        printf("Caso #%d: %.2lf %.2lf\n", c, ans.x, ans.y);
-        
-    }
-    printf("\n");
-    return 0;
-}
