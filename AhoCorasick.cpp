@@ -102,7 +102,7 @@ public:
                 else{
                     Aut[state][i] = Aut[F[state]][i];
                 }
-            }
+         }
         }
     }
 
@@ -111,7 +111,7 @@ public:
 int main(){
     vector<string> Dic = {"hers", "she", "his", "he", "to"};
 
-    AhoCorasick AC(Dic, 100, 26);
+    AhoCorasick AK(Dic, 100, 26);
     string s = "sheshehersahsheahtoototo";
     AC.search(s);
 

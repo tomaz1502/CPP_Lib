@@ -14,29 +14,21 @@ public:
 
 	}
 
-	Matrix(const vector< vector<T> > &V){
-		M = V;
-	}
+	Matrix(const vector< vector<T> > &V) { M = V; }
 
-	int size() const{
-		return this->M.size();
-	}
+	int size() const { return this->M.size(); }
 
-	T get(int i, int j) const{
-		return M[i][j];
-	}
+	T get(int i, int j) const { return M[i][j]; }
 
-	vector<T> get(int i) const{
-		return M[i];
-	}
+	vector<T> get(int i) const { return M[i]; }
 
-	vector<T>& operator[](int i){
-		return M[i];
-	}
+	vector<T>& operator[](int i){ return M[i]; }
 
-	void update(int i, int j, T value){
-		M[i][j] = value;
-	}
+	void update(int i, int j, T value) { M[i][j] = value; }
+
+    Matrix<T> gaussian_elimination() {
+
+    }
 
 	Matrix<T> operator+(const Matrix<T> &M_) const{
 		Matrix<T> ret = Matrix(M.size(), M[0].size());

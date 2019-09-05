@@ -21,7 +21,7 @@ public:
             in.emplace(x, x);
         }
 
-        else{
+        else {
             T m = in.top().second; // previous minimum
             in.emplace(x, std::min(x, m));
         }
@@ -31,7 +31,7 @@ public:
     T pop(){
         if(out.empty()){
 
-            while(!in.empty()){ // transfers everything to out stack (inverting their order)
+            while(!in.empty()) { // transfers everything to out stack (inverting their order)
 
                 std::pair<T, T> p = in.top(); in.pop();
                     
@@ -39,7 +39,7 @@ public:
                     out.emplace(p.first, p.first);
                 }
                 
-                else{
+                else {
                     T m = out.top().second; 
                     out.emplace(p.first, std::min(p.first, m));
                 }
@@ -83,11 +83,8 @@ int main(){
     MQ.push('h');
     
     std::cout << MQ.getMin() << '\n';
-
     std::cout << MQ.pop() << '\n';
-
     std::cout << MQ.getMin() << '\n';
-
 
     return 0;
 }

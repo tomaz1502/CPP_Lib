@@ -3,21 +3,21 @@ using namespace std;
 
 template<typename T>
 class SegTree{ //Array is 0-based, Tree is 1 based
-	long long sz;
+	int sz;
 	vector<T> Tree, Lazy;
 public:
 
-	void build(long long idT, long long l, long long r, vector<T> &V){
+	void build(int idT, int l, int r, vector<T> &V){
 		if(l == r) Tree[idT] = V[l];
 		else{
-			long long m = (l+r)/2;
+			int m = (l+r)/2;
 			build(idT * 2, l, m, V);
 			build(idT * 2 + 1, m+1, r, V);
 			Tree[idT] = Tree[idT * 2] + Tree[idT * 2 + 1];
 		}
 	}
 
-	void propagate(long long idT, long long l, long long r){ //Lazy só funciona com soma (a principio)
+	void propagate(int idT, int l, int r){ //Lazy só funciona com soma (a principio)
 		Tree[idT] += (r - l + 1) * Lazy[idT];
 		
 		if(r != l){
@@ -28,15 +28,15 @@ public:
 		Lazy[idT] = 0;
 	}
 
-	T querry(long long l, long long r){ return querry(1,0,sz-1,l,r); }
+	T querry(int l, int r){ return querry(1,0,sz-1,l,r); }
 
-	T querry(long long idT, long long l, long long r, long long ql, long long qr){
+	T querry(int idT, int l, int r, int ql, int qr){
 		propagate(idT, l, r);
 
 		if(l >= ql and r <= qr) return Tree[idT];
 		if(ql > r or qr < l or l > r) return 0; //aqui tem que ser o elemento neutro de op
 
-		long long mid = (l + r)/2;
+		int mid = (l + r)/2;
 		
 		T res_l = querry(2*idT    , l , mid , ql, qr);
 		T res_r = querry(2*idT + 1, mid+1, r, ql, qr);
@@ -44,9 +44,9 @@ public:
 		return res_l + res_r;
 	}
 
-	void update(long long idL, long long idR, T value){ update(1, 0, sz-1, idL, idR, value); }
+	void update(int idL, int idR, T value){ update(1, 0, sz-1, idL, idR, value); }
 
-	T update(long long idT, long long l, long long r, long long idL, long long idR, T value){
+	T update(int idT, int l, int r, int idL, int idR, T value){
 
 		if(idL <= l and r <= idR){
 			Lazy[idT] += value;
@@ -58,7 +58,7 @@ public:
 
 		if(idL > r or idR < l) return Tree[idT];		
 
-		long long m = (l+r)/2;
+		int m = (l+r)/2;
 
 		T res_l = update(2 * idT, l, m, idL, idR, value);
 		T res_r = update(2 * idT + 1, m+1, r, idL, idR, value);
@@ -66,7 +66,7 @@ public:
 		return Tree[idT] = res_l + res_r;
 	}
 
-	SegTree(vector<long long> &V){
+	SegTree(vector<int> &V){
 		sz = V.size();
 		Tree = vector<T>(4*sz);
 		Lazy = vector<T>(4*sz);

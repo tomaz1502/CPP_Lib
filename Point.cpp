@@ -6,6 +6,7 @@ using type = double;
 struct Point{
     type x, y;
 
+    Point() { }
     Point(type x_, type y_) : x(x_) , y(y_) {}
     Point(Point P, Point Q) : x(Q.x - P.x) , y(Q.y - P.y) {}
 
