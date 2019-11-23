@@ -7,7 +7,7 @@ class SegTree{ //Array is 0-based, Tree is 1 based
 	vector<T> Tree, Lazy;
 public:
 
-	void build(int idT, int l, int r, vector<T> &V){
+	void build(int idT, int l, int r, vector<T> &V) {
 		if(l == r) Tree[idT] = V[l];
 		else{
 			int m = (l+r)/2;
@@ -17,7 +17,7 @@ public:
 		}
 	}
 
-	void propagate(int idT, int l, int r){ //Lazy só funciona com soma (a principio)
+	void propagate(int idT, int l, int r) { //Lazy só funciona com soma (a principio)
 		Tree[idT] += (r - l + 1) * Lazy[idT];
 		
 		if(r != l){
@@ -28,9 +28,9 @@ public:
 		Lazy[idT] = 0;
 	}
 
-	T querry(int l, int r){ return querry(1,0,sz-1,l,r); }
+	T querry(int l, int r) { return querry(1,0,sz-1,l,r); }
 
-	T querry(int idT, int l, int r, int ql, int qr){
+	T querry(int idT, int l, int r, int ql, int qr) {
 		propagate(idT, l, r);
 
 		if(l >= ql and r <= qr) return Tree[idT];
@@ -44,9 +44,9 @@ public:
 		return res_l + res_r;
 	}
 
-	void update(int idL, int idR, T value){ update(1, 0, sz-1, idL, idR, value); }
+	void update(int idL, int idR, T value) { update(1, 0, sz-1, idL, idR, value); }
 
-	T update(int idT, int l, int r, int idL, int idR, T value){
+	T update(int idT, int l, int r, int idL, int idR, T value) {
 
 		if(idL <= l and r <= idR){
 			Lazy[idT] += value;
@@ -66,7 +66,7 @@ public:
 		return Tree[idT] = res_l + res_r;
 	}
 
-	SegTree(vector<int> &V){
+	SegTree(vector<T> &V){
 		sz = V.size();
 		Tree = vector<T>(4*sz);
 		Lazy = vector<T>(4*sz);
