@@ -40,9 +40,6 @@ bool ccw(Point P, Point Q, Point R){ return cross(Q-P, R-Q) > 0; }
 type orientation(Point P, Point Q, Point R){ return cross(Q-P, R-Q); }
 Point perp(Point P){ return Point(-P.y, P.x); }
 
-
-
-
 struct Line{ //line that is oriented by V and satisfies ax + by = c
     Point V;
     type c;

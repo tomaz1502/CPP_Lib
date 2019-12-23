@@ -7,7 +7,7 @@ class BigInt {
     
 public:
     string num;
-    BigInt(string s) : num(s) {}
+    BigInt(const string &s) : num(s) {}
 
     string get() { return num; }
 
@@ -17,25 +17,14 @@ public:
         reverse(n1.begin(), n1.end());
         reverse(n2.begin(), n2.end());
 
+        while(n1.size() < n2.size()) n1 += '0';
+        while(n2.size() < n1.size()) n2 += '0';
+
         int i = 0, carry = 0;
-        for(; i < min(n1.size(), n2.size()); i++) {
+        for(int i = 0; i < n1.size(); i++) {
             int p = n1[i] - '0' + n2[i] - '0' + carry;
             carry = p/10;
             ret += (p%10) + '0';
-        }
-
-        while(i < n1.size()) {
-            int p = n1[i] - '0' + carry;
-            carry = p/10;
-            ret += (p%10) + '0';
-            i++;
-        }
-
-        while(i < n2.size()) {
-            int p = n2[i] - '0' + carry;
-            carry = p/10;
-            ret += (p%10) + '0';
-            i++;
         }
 
         if(carry > 0) ret += (carry + '0');
@@ -44,6 +33,18 @@ public:
         return BigInt(ret);
     }
 
+    void operator+=(BigInt B) {
+        *this = *this + B;
+    }
 
+    BigInt operator-(BigInt B) {
 
+    }
 };
+
+int main() {
+    BigInt N("1234"), M("9991");
+    N += M;
+    cout << N.get() << '\n';
+    return 0;
+}

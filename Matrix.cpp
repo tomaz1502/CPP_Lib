@@ -7,11 +7,10 @@ class Matrix{
 	vector< vector<T> > M;
 
 public:
-	Matrix(int rows, int columns, bool identity = false){
+	Matrix(int rows, int columns, bool identity = false) {
 		M = vector< vector<T> >(rows, vector<T>(columns, 0));
 		assert(rows == columns or identity == false);
 		if(identity) for(int i = 0; i<rows; ++i) this->update(i,i,1);
-
 	}
 
 	Matrix(const vector< vector<T> > &V) { M = V; }
@@ -26,7 +25,9 @@ public:
 
 	void update(int i, int j, T value) { M[i][j] = value; }
 
-    Matrix<T> gaussian_elimination() {
+    Matrix<T> invert() {
+
+    	
 
     }
 

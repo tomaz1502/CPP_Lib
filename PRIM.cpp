@@ -36,11 +36,11 @@ int main(){
         seen[get<2>(at)] = true;
         
         //include get<2>(at) in the cut
-        MST.push_back({get<0>(at), get<1>(at), get<2>(at)});
+        MST.push_back(at);
         cost += get<0>(at);
 
         for(auto child : G[get<2>(at)]){
-            pq.push({-child.second, get<2>(at), child.first});
+            pq.emplace(-child.second, get<2>(at), child.first);
         }
     }
         

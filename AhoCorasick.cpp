@@ -96,7 +96,7 @@ public:
 
             for(int i = 0; i<s_alf; i++){
                 if(G[state][i] != -1){
-                    q.push({G[state][i], state, i});
+                    q.emplace(G[state][i], state, i);
                     Aut[state][i] = G[state][i];
                 }
                 else{
@@ -113,7 +113,7 @@ int main(){
 
     AhoCorasick AK(Dic, 100, 26);
     string s = "sheshehersahsheahtoototo";
-    AC.search(s);
+    AK.search(s);
 
     return 0;
 }
