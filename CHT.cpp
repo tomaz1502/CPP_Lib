@@ -16,7 +16,7 @@ struct Line {
 
 };
 
-struct CHT { // assume queries and insertions on descending order of x
+struct CHT { // assume queries and insertions on descending order of x (easy to adapt to inc/inc or inc/desc or desc/inc)
     
     deque< Line > dq;
 
