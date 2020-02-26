@@ -69,8 +69,6 @@ bool operator<(const Event &e1, const Event &e2) {
     return e1.x < e2.x;
 }
  
-vector< Line > Lines;
- 
 ll RecUnion(const vector< Rec > &Recs) {
     
     vector< Event > Evs;
