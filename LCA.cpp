@@ -2,27 +2,30 @@
 #include <vector>
 using namespace std;
 
-struct LCA_DS {
-    int tam, t, lg;
-    vector< vector< int > > G, lift;
-    vector< int > disc, fin;
+const int N = 1e5 + 10;
+vector<int> G[N];
 
-    void dfs(int v, int p) {
+struct LCA {
+    int tam, t, lg;
+    vector< vector< int > > lift;
+    vector< int > disc, fin, dep;
+
+    void dfs(int v, int p, int d = 0) {
+        dep[v] = d;
         disc[v] = t++;
         for(int u : G[v]) {
             if(u == p) continue;
-            dfs(u,v);
+            dfs(u, v, d + 1);
             lift[u][0] = v;
         }
         fin[v] = t++;
     }
 
-    LCA_DS(const vector< vector< int > > &G_, int lg_ = 20, int root = 0) {
-        G = G_;
-        tam = G.size(); lg = lg_;
+    LCA(int tam_, int lg_ = 20, int root = 0) {
+        tam = tam_; lg = lg_;
         t = 0;
         lift = vector< vector< int > >(tam, vector<int>(lg));
-        disc = fin = vector< int >(tam);
+        disc = fin = dep = vector< int >(tam);
 
         dfs(root,-1);
         lift[root][0] = root;
@@ -34,10 +37,15 @@ struct LCA_DS {
         }
     }
 
+    int dist(int u, int v) {
+        return dep[u] + dep[v] - 2 * dep[lca(u,v)];
+    }
+
     bool isAncestor(int u, int v) { return disc[u] < disc[v] and fin[u] > fin[v]; }
 
     int lca(int u, int v) {
-        
+        if(u == v) return u;
+
         if(isAncestor(u,v)) return u;
         if(isAncestor(v,u)) return v;
 
@@ -51,27 +59,23 @@ struct LCA_DS {
 
 };
 
-
 int main() {
 
     int n; cin >> n;
-    vector< vector< int > > G(n);
-    
+
     for(int i = 0; i<n-1; i++) {
         int u, v; cin >> u >> v; --u; --v;
         G[u].push_back(v);
         G[v].push_back(u);
     }
 
-    LCA_DS L(G);
+    LCA L(n);
 
     int q; cin >> q;
     while(q--) {
         int u, v; cin >> u >> v; u--; v--;
-        cout << L.lca(u,v) + 1 << '\n';  
+        cout << L.lca(u,v) + 1 << '\n';
     }
-
-
 
     return 0;
 }

@@ -3,7 +3,6 @@ using namespace std;
 
 using ll = long long;
 
-
 struct Line {
 
     ll m, c;

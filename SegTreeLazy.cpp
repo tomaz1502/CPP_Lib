@@ -28,9 +28,9 @@ public:
 		Lazy[idT] = 0;
 	}
 
-	T querry(int l, int r) { return querry(1,0,sz-1,l,r); }
+	T query(int l, int r) { return query(1,0,sz-1,l,r); }
 
-	T querry(int idT, int l, int r, int ql, int qr) {
+	T query(int idT, int l, int r, int ql, int qr) {
 		propagate(idT, l, r);
 
 		if(l >= ql and r <= qr) return Tree[idT];
@@ -38,8 +38,8 @@ public:
 
 		int mid = (l + r)/2;
 		
-		T res_l = querry(2*idT    , l , mid , ql, qr);
-		T res_r = querry(2*idT + 1, mid+1, r, ql, qr);
+		T res_l = query(2*idT    , l , mid , ql, qr);
+		T res_r = query(2*idT + 1, mid+1, r, ql, qr);
 
 		return res_l + res_r;
 	}
