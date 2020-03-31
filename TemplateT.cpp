@@ -160,16 +160,31 @@ vector<ll> sieve(ll n) {
     return primes;
 }
 
-ll powmod(ll base, ll exp, ll modulus) {
-	base %= modulus;
-	ll result = 1;
+ll fpow(ll base, ll exp) {
+	base %= mod;
+	ll ret = 1;
 	while (exp > 0) {
-		if (exp & 1) result = (result * base) % modulus;
-		base = (base * base) % modulus;
+		if (exp & 1) ret = (ret * base) % mod;
+		base = (base * base) % mod;
 		exp >>= 1;
 	}
-  	return result;
+  	return ret;
 }
+
+ll fat[N];
+void sf() {
+    fat[0] = 1;
+    for(int i = 1; i < N; ++i) fat[i] = (i * fat[i - 1]) % mod;
+}
+
+ll inv(ll x) {
+    return fpow(x, mod - 2);
+}
+
+ll comb(ll n, ll k) {
+    return ((fat[n] * inv(fat[k]) % mod) * inv(fat[n - k])) % mod;
+}
+
 
 // source : https://github.com/kth-competitive-programming/kactl/blob/master/content/data-structures/LineContainer.h
 // get MAXIMUM. to get minimum : insert lines with -m and -c, answer will be -min
