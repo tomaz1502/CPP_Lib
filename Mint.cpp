@@ -25,7 +25,8 @@ template<int Modulus, typename Op> struct modint {
     void operator^= (Op other) { *this = *this ^ other; }
 
     modint operator+= (modint &other) {
-        number = (number + other.number) % Modulus;
+        number += other.number;
+        if(number >= Modulus) number -= Modulus;
         return number;
     }
     
