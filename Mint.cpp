@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template<int Modulus> struct modint {
-    long long number;
+template<int Modulus, typename Op> struct modint {
+    Op number;
 
-    modint (long long Number = 0) : number(Number % Modulus) { }
+    modint (Op Number = 0) : number(Number % Modulus) { }
 
     modint operator+ (modint other) { return modint(number) += other; }
     modint operator- (modint other) { return modint(number) -= other; }
@@ -12,17 +12,17 @@ template<int Modulus> struct modint {
     modint operator/ (modint other) { return modint(number) /= other; }
     modint operator^ (modint other) { return modint(number) ^= other; }
 
-    modint operator+ (long long other) { return *this + modint(other); }
-    modint operator- (long long other) { return *this - modint(other); }
-    modint operator* (long long other) { return *this * modint(other); }
-    modint operator/ (long long other) { return *this / modint(other); }
-    modint operator^ (long long other) { return *this ^ modint(other); } 
+    modint operator+ (Op other) { return *this + modint(other); }
+    modint operator- (Op other) { return *this - modint(other); }
+    modint operator* (Op other) { return *this * modint(other); }
+    modint operator/ (Op other) { return *this / modint(other); }
+    modint operator^ (Op other) { return *this ^ modint(other); } 
 
-    void operator+= (long long other) { *this = *this + other; }
-    void operator-= (long long other) { *this = *this - other; }
-    void operator*= (long long other) { *this = *this * other; }
-    void operator/= (long long other) { *this = *this / other; }
-    void operator^= (long long other) { *this = *this ^ other; }
+    void operator+= (Op other) { *this = *this + other; }
+    void operator-= (Op other) { *this = *this - other; }
+    void operator*= (Op other) { *this = *this * other; }
+    void operator/= (Op other) { *this = *this / other; }
+    void operator^= (Op other) { *this = *this ^ other; }
 
     modint operator+= (modint &other) {
         number = (number + other.number) % Modulus;
@@ -43,7 +43,7 @@ template<int Modulus> struct modint {
     modint operator^= (modint &Exp) {
         modint tmp = *this;
         modint ret(1);
-        long long exp = Exp.number;
+        Op exp = Exp.number;
 
         while (exp > 0) {
             if(exp & 1) ret *= tmp;
@@ -63,7 +63,7 @@ template<int Modulus> struct modint {
 };
 
 const int MOD = 7;
-using mint = modint< MOD >;
+using mint = modint< MOD, long long >;
 
 ostream &operator<< (ostream &out, mint mi) {
     return out << mi.number;
