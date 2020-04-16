@@ -61,14 +61,14 @@ template<int Modulus, typename Op> struct modint {
         return *this;
     }
 
+    friend ostream &operator<< (ostream &out, modint mi) {
+        return out << mi.number;
+    }
 };
 
 const int MOD = 7;
 using mint = modint< MOD, long long >;
 
-ostream &operator<< (ostream &out, mint mi) {
-    return out << mi.number;
-}
 
 
 int main() {
