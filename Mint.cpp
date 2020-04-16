@@ -24,24 +24,29 @@ template<int Modulus, typename Op> struct modint {
     void operator/= (Op other) { *this = *this / other; }
     void operator^= (Op other) { *this = *this ^ other; }
 
-    modint operator+= (modint &other) {
+    bool operator== (modint other) { return number == other.number; }
+    bool operator!= (modint other) { return !(*this == other); }
+    bool operator== (Op other) { return number == other; }
+    bool operator!= (Op other) { return !(number == other); }
+
+    modint operator+= (modint other) {
         number += other.number;
         if(number >= Modulus) number -= Modulus;
         return number;
     }
     
-    modint operator-= (modint &other) {
+    modint operator-= (modint other) {
         if(number < other.number) number += Modulus;
         number -= other.number;
         return number;
     }
 
-    modint operator*= (modint &other) {
+    modint operator*= (modint other) {
         number = (number * other.number) % Modulus;
         return number;
     }
 
-    modint operator^= (modint &Exp) {
+    modint operator^= (modint Exp) {
         modint tmp = *this;
         modint ret(1);
         Op exp = Exp.number;
@@ -60,18 +65,19 @@ template<int Modulus, typename Op> struct modint {
         *this *= invOther;
         return *this;
     }
-
-    friend ostream& operator<< (ostream &out, modint mi) {
-        return out << mi.number;
-    }
-
-    friend istream& operator>> (istream &in, modint mi) {
-        return in >> mi.nuber;
-    }
+    
 };
 
-const int MOD = 7;
-using mint = modint< MOD, long long >;
+const int MOD = 998244353;
+using mint = modint< MOD, int >;
+
+ostream &operator<< (ostream &out, mint mi) {
+    return out << mi.number;
+}
+
+istream &operator>> (istream &in, mint mi) {
+    return in >> mi.number;
+}
 
 
 
