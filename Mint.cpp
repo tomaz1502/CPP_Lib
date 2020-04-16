@@ -61,8 +61,12 @@ template<int Modulus, typename Op> struct modint {
         return *this;
     }
 
-    friend ostream &operator<< (ostream &out, modint mi) {
+    friend ostream& operator<< (ostream &out, modint mi) {
         return out << mi.number;
+    }
+
+    friend istream& operator>> (istream &in, modint mi) {
+        return in >> mi.nuber;
     }
 };
 
