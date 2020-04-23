@@ -20,7 +20,7 @@ public:
         while(n1.size() < n2.size()) n1 += '0';
         while(n2.size() < n1.size()) n2 += '0';
 
-        int i = 0, carry = 0;
+        int carry = 0;
         for(int i = 0; i < n1.size(); i++) {
             int p = n1[i] - '0' + n2[i] - '0' + carry;
             carry = p/10;

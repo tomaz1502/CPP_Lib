@@ -3,13 +3,9 @@
 #include <queue>
 #include <set>
 #include <map>
-
 using namespace std;
 
-
-class AhoCorasick{
-
-public:
+struct AhoCorasick{
 
     map< int, string > st_w;
     vector< vector< int > > G, Aut;
@@ -18,7 +14,7 @@ public:
     vector< string > Dic;
     int maxc, s_alf, prx;
 
-    void insert(string &S){
+    void insert(string &S) {
         int at = 0;
 
         for(char c : S){
@@ -31,31 +27,31 @@ public:
         st_w[at] = S;
     }
 
-    void search(string &T){
+    void search(string &T) {
         int at = 0;
-        for(int i = 0; i<T.size(); i++){
+        for(int i = 0; i < (int)T.size(); i++){
             int let = T[i] - 'a'; // letra base do alfabeto
             at = Aut[at][let];
-            if(endOfWord[at]){
+            if(endOfWord[at]) {
                 cout << "Word found! Position : " << i << '\n';
                 cout << st_w[at] << '\n';
             }
 
             int state = at;
-            while(N[state] != 0){
+            while(N[state] != 0) {
                 state = N[state];
                 cout << st_w[state] << '\n';
             }
         }
     }
 
-    void makelink(const tuple<int, int, int> &p){
+    void makeLink(const tuple<int, int, int> &p) {
         int state = get<0>(p), par = get<1>(p), cpar = get<2>(p);
-        if(par == 0){
+        if(par == 0) {
             F[state] = 0;
             N[state] = 0;
         }
-        else{
+        else {
             int pre = F[par];
             while(G[pre][cpar] == -1) pre = F[pre];
             F[state] = G[pre][cpar];
@@ -65,7 +61,7 @@ public:
         }
     }
 
-    AhoCorasick(vector< string > &Dic_, int maxc_ = 1e6, int s_alf_ = 26){
+    AhoCorasick(vector< string > &Dic_, int maxc_ = 1e6, int s_alf_ = 26) {
         maxc = maxc_;
         s_alf = s_alf_;
         Dic = Dic_;
@@ -80,17 +76,17 @@ public:
         queue< tuple<int, int , int > > q;
 
         for(int i = 0; i<Dic.size(); i++) insert(Dic[i]);
-        for(int i = 0; i<s_alf; i++){
+        for(int i = 0; i<s_alf; i++) {
             if(G[0][i] == -1)  G[0][i] = 0;
             else q.push({G[0][i], 0, i});
        
             Aut[0][i] = G[0][i];
         }
 
-        while(!q.empty()){
+        while(!q.empty()) {
             tuple<int, int, int> p = q.front(); q.pop();
 
-            makelink(p);
+            makeLink(p);
 
             int state = get<0>(p);
 
@@ -102,7 +98,7 @@ public:
                 else{
                     Aut[state][i] = Aut[F[state]][i];
                 }
-         }
+            }
         }
     }
 

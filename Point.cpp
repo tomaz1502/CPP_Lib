@@ -3,7 +3,7 @@ using namespace std;
 
 using type = double;
 
-struct Point{
+struct Point {
     type x, y;
 
     Point() { }
