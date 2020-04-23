@@ -29,7 +29,7 @@ struct SA {
         }
 
         for(int i = 0; i < n; i++) {
-            newSa[count[rank(sa[i] + k)]] = sa[i];
+            newSa[count[rank(sa[i] + k)]] = sa[i]; // quantos caras tem rank menor que eu?
             count[rank(sa[i] + k)]++;
         }
 
@@ -49,11 +49,8 @@ struct SA {
         iota(sa.begin(), sa.end(), 0);
 
         for(int k = 1; k < n; k <<= 1) {
-            //sort(sa.begin(), sa.end(), [&](int i, int j) { return val(i, k) < val(j, k); } );
             countingSort(k);
             countingSort(0);
-         //   cout << "Current k: " << k << " sa:\n";
-         //   for(int i : sa) cout << i << "\n";
 
             vector<int> newRa(n);
             newRa[sa[0]] = 0;
@@ -65,8 +62,6 @@ struct SA {
             
             ra = newRa;
             if(ra[sa[n - 1]] == n - 1) break;
-         //   cout << "Rank:\n";
-         //   for(int i = 0; i < n; i++) cout << ra[i] << "\n";
         }
 
     }
