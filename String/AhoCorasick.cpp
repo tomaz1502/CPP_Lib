@@ -5,7 +5,7 @@
 #include <map>
 using namespace std;
 
-struct AhoCorasick{
+struct AhoCorasick {
 
     map< int, string > st_w;
     vector< vector< int > > G, Aut;
@@ -17,7 +17,7 @@ struct AhoCorasick{
     void insert(string &S) {
         int at = 0;
 
-        for(char c : S){
+        for(char c : S) {
             int let = c - 'a';
             if(G[at][let] == -1) G[at][let] = prx++;
             at = G[at][let];
@@ -29,7 +29,7 @@ struct AhoCorasick{
 
     void search(string &T) {
         int at = 0;
-        for(int i = 0; i < (int)T.size(); i++){
+        for(int i = 0; i < (int)T.size(); i++) {
             int let = T[i] - 'a'; // letra base do alfabeto
             at = Aut[at][let];
             if(endOfWord[at]) {
@@ -75,10 +75,10 @@ struct AhoCorasick{
 
         queue< tuple<int, int , int > > q;
 
-        for(int i = 0; i<Dic.size(); i++) insert(Dic[i]);
+        for(int i = 0; i < (int)Dic.size(); i++) insert(Dic[i]);
         for(int i = 0; i<s_alf; i++) {
             if(G[0][i] == -1)  G[0][i] = 0;
-            else q.push({G[0][i], 0, i});
+            else q.emplace(G[0][i], 0, i);
        
             Aut[0][i] = G[0][i];
         }
@@ -90,7 +90,7 @@ struct AhoCorasick{
 
             int state = get<0>(p);
 
-            for(int i = 0; i<s_alf; i++){
+            for(int i = 0; i < s_alf; i++){
                 if(G[state][i] != -1){
                     q.emplace(G[state][i], state, i);
                     Aut[state][i] = G[state][i];
