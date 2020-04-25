@@ -1,14 +1,14 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cassert>
 using namespace std;
 
-class Stack{
+struct Stack {
     int v[10000];
     int p, minE;
-public:
 
-    Stack(){ p = 0; }
+    Stack() { p = 0; }
 
-    void push(int x){
+    void push(int x) {
         if(p == 0){
             v[p++] = x;
             minE = x;
@@ -22,7 +22,7 @@ public:
         }
     }
 
-    int pop(){
+    int pop() {
         if(p == 0) cout << "Empty!\n", assert(false);
         p--;
         if(v[p] < minE){
@@ -32,10 +32,10 @@ public:
         else return v[p];
     }
 
-    int MIN(){ return minE; }
+    int MIN() { return minE; }
 };
 
-int main(){
+int main() {
     Stack s;
     s.push(3); s.push(4); s.push(2);
     cout << s.MIN() << '\n';

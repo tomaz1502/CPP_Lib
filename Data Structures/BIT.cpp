@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <cassert>
 using namespace std;
 
 template<typename T> //T must be "sum-able -> may have operator+ defined"
