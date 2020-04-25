@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 using namespace std;
 
 int extGcd(int a, int b, int &x, int &y) {
