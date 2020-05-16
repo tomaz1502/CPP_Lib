@@ -19,7 +19,7 @@ int ternary_search(int l, int r) {  // return minimum of f in the interval [l, r
 
 int main() {
     
-    std::cout << ts(-100, 150) << "\n";
+    std::cout << ternary_search(-100, 150) << "\n";
 
     return 0;
 }
