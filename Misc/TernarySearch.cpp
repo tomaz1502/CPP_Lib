@@ -1,12 +1,11 @@
 #include <iostream>
-using namespace std;
 
 int f(int x) { // example function
     return x * x - 3 * x + 5;
 }
 
 // discrete version
-int ts(int l, int r) {  // mininum
+int ts(int l, int r) {  // return minimum of f in the interval [l, r]
     if(l >= r) return l;
 
     int m = (l + r - 1) / 2;
@@ -20,7 +19,7 @@ int ts(int l, int r) {  // mininum
 
 int main() {
     
-    cout << ts(-100, 150) << "\n";
+    std::cout << ts(-100, 150) << "\n";
 
     return 0;
 }
