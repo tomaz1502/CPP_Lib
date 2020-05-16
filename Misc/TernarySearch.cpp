@@ -5,7 +5,7 @@ int f(int x) { // example function
 }
 
 // discrete version
-int ts(int l, int r) {  // return minimum of f in the interval [l, r]
+int ternary_search(int l, int r) {  // return minimum of f in the interval [l, r]
     if(l >= r) return l;
 
     int m = (l + r - 1) / 2;
