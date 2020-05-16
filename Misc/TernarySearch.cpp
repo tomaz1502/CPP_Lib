@@ -11,9 +11,9 @@ int ternary_search(int l, int r) {  // return minimum of f in the interval [l, r
     int m = (l + r - 1) / 2;
 
     if (f(m) < f(m + 1))
-        return ts(l, m);
+        return ternary_search(l, m);
     else
-        return ts(m + 1, r);
+        return ternary_search(m + 1, r);
 
 }
 
