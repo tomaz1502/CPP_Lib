@@ -27,7 +27,7 @@ int main(){
     
     for(auto elem : G[1]) pq.push({-elem.second, 1, elem.first});
     seen[1] = true;
-
+    
     while(!pq.empty()){
         tuple<int, int, int> at = pq.top(); pq.pop();
         get<0>(at) *= -1;

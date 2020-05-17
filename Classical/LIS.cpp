@@ -11,7 +11,6 @@ int LIS(const vector< int > &a) { // Longest non-decreasing: troca lower por upp
     for(int j = 0; j<=n; j++) {
         if(d[j] == lim) return j;
     }
-
     assert(false);
     return -1;
 }

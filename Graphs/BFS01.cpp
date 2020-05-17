@@ -7,9 +7,8 @@ const int inf = 1e8;
 vector<pair<int, int>> G[N];
 
 int bfs01(int s, int t) {
-
     vector<bool> seen(N, false);
-
+    
     deque<pair<int, int>> q;
     q.emplace_back(s,0);
 
@@ -19,7 +18,6 @@ int bfs01(int s, int t) {
         pair<int, int> at = q.front(); q.pop_front();
         int v, dep;
         tie(v, dep) = at;
-        
         if(v == t) {
             ans = min(ans, dep);
             continue;
@@ -34,7 +32,6 @@ int bfs01(int s, int t) {
                 else q.emplace_front(u, dep);
             }
         }
-
     }
 
     return ans;
