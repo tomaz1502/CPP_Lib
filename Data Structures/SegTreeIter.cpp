@@ -8,7 +8,7 @@ class SegTree { //array 0-based
 
 public :
  
-	T query(int l, int r) {
+	T query(size_t l, size_t r) {
         T res = neutral;
         l += sz; r += sz;
         while (l <= r) {
@@ -19,7 +19,7 @@ public :
         return res;
     }
  
-	void update(int id, T value) {
+	void update(size_t id, T value) {
         id += sz;
         Tree[id] = op(Tree[id], value);
         for (int i = id; i > 1; i >>= 1)
@@ -35,13 +35,13 @@ public :
             Tree[i] = op(Tree[i << 1], Tree[(i << 1) | 1]);
     }
 
-    SegTree(int sz_, function<T(T, T)> op_, T neutral_) : sz(sz_) , neutral(neutral_) , op(op_) {
+    SegTree(size_t sz_, function<T(T, T)> op_, T neutral_) : sz(sz_) , neutral(neutral_) , op(op_) {
         Tree = vector<T>(2 * sz, neutral);
     }
  
 private :
 
-    int sz;
+    size_t sz;
     vector<T> Tree;
     const T neutral;
     function<T(T, T)> op;
@@ -49,7 +49,7 @@ private :
 };
 
 int main() {
-
+    
     SegTree<int> ST(10, [&] (int a, int b) { return a + b; }, 0);
     ST.update(2, 3);
     ST.update(3, 4);
