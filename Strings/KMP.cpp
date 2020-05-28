@@ -5,8 +5,10 @@ using namespace std;
 struct KMP {
 
     vector<int> lps;
+    vector<vector<int>> automaton;
+    string Ptt;
 
-    KMP(string Ptt) {
+    KMP(string _Ptt) : Ptt(_Ptt) {
         lps.resize(Ptt.size());
         lps[0] = 0;
         int i = 1, j = 0;
@@ -22,6 +24,19 @@ struct KMP {
                     i++;
                 }
                 else j = lps[j-1];
+            }
+        }
+        make_automaton();
+    }
+
+    void make_automaton() {
+        int len = Ptt.size();
+        automaton = vector<vector<int>>(len, vector<int>(26));
+        for (int i = 0; i <= len; ++i) {
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                if (i < len && ch == Ptt[i]) automaton[i][ch - 'a'] = i + 1;
+                else if (i > 0) automaton[i][ch - 'a'] = automaton[lps[i - 1]][ch - 'a'];
+                else automaton[i][ch - 'a'] = 0;
             }
         }
     }

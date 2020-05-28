@@ -72,7 +72,7 @@ vector< Point > convex_hull(vector< Point > pts){
     vector< Point > low, up, ret;
 
 
-    for(int i = 0; i<pts.size(); i++){
+    for(int i = 0; i < (int)pts.size(); i++){
         while(low.size() > 1){
             type c = cross(pts[i] - low.back(), low.back() - low[low.size() - 2]);
             if(c >= 0) break;
