@@ -2,18 +2,11 @@
 using namespace std;
 
 
-template< typename T >
-class SparseTable {
-    
-    vector< vector< T > > SpT;
-    function<T(T,T)> F;
-    vector< int > logr;
-    int sz, lg;
+template<typename T> class SparseTable {
 
 public:
 
-    SparseTable(vector< T > &V, function<T(T,T)> F_) {
-        F = F_;
+    SparseTable(vector< T > &V, function<T(T,T)> F_) : F(F_) {
         sz = V.size();
         lg = (int)log2(sz) + 1;
         SpT = vector< vector< T > >(sz, vector< T >(lg));
@@ -22,22 +15,23 @@ public:
             SpT[i][0] = V[i];
         }
 
-        for(int j = 1; j<lg; j++) {
-            for(int i = 0; i + 1 << (j - 1) < sz; ++i) {
-                SpT[i][j] = F(SpT[i][j-1], SpT[i + 1 << (j - 1)][j-1]);
+        for (int j = 1; j<lg; j++) {
+            for (int i = 0; i + (1 << (j - 1)) < sz; ++i) {
+                SpT[i][j] = F(SpT[i][j-1], SpT[i + (1 << (j - 1))][j-1]);
             }
         }
         
         logr = vector<int>(lg + 1);
         logr[1] = 0;
-        for(int i = 2; i<lg; i++) logr[i] = logr[i/2] + 1;
+        for (int i = 2; i<lg; i++)
+            logr[i] = logr[i/2] + 1;
 
     }
 
-    T querry(int L, int R) {
+    T query(int L, int R) {
         T ret = 0; // neutral element of F
-        for(int j = lg-1; j>=0; j--) {
-            if(1 << j <= R - L + 1) {
+        for (int j = lg - 1; j >= 0; j--) {
+            if (1 << j <= R - L + 1) {
                 ret = F(ret, SpT[L][j]);
                 L += 1 << j;
             }
@@ -50,7 +44,11 @@ public:
         return F(SpT[L][j], SpT[R - (1 << j) + 1][j]);
     }
 
-
+private:
+    vector< vector< T > > SpT;
+    function<T(T,T)> F;
+    vector< int > logr;
+    int sz, lg;
 };
 
 int f(int a, int b) { return min(a,b); }

@@ -68,5 +68,9 @@ int main() {
     KMP kmp(Ptt);
     kmp.search(Ptt, Txt);
 
+    for (auto [l, r] : v) {
+
+    }
+
     return 0;
 }
