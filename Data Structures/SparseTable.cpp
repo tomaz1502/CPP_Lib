@@ -17,7 +17,7 @@ public:
 
         for (int j = 1; j<lg; j++) {
             for (int i = 0; i + (1 << (j - 1)) < sz; ++i) {
-                SpT[i][j] = F(SpT[i][j-1], SpT[i + (1 << (j - 1))][j-1]);
+                SpT[i][j] = F(SpT[i][j - 1], SpT[i + (1 << (j - 1))][j - 1]);
             }
         }
         
@@ -39,7 +39,7 @@ public:
         return ret;
     }
 
-    T fastQuerry(int L, int R) { // O(1) (only for idempotent functions)
+    T fast_query(int L, int R) { // O(1) (only for idempotent functions)
         int j = logr[R - L + 1];
         return F(SpT[L][j], SpT[R - (1 << j) + 1][j]);
     }
@@ -59,7 +59,7 @@ int main() {
     vector<int> V = {1,4,1,2,3,10,6,3};
 
     SparseTable<int> S(V,f);
-    cout << S.fastQuerry(3,5) << '\n';
+    cout << S.fast_query(3,5) << '\n';
 
     return 0;
 }
