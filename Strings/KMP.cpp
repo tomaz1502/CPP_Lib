@@ -41,7 +41,7 @@ struct KMP {
         }
     }
 
-    void search(string Ptt, string Txt) {
+    void search(string &Txt) {
         int i = 0, j = 0, n = Txt.size(), m = Ptt.size();
         while(i - j <= n - m) {
             if(Ptt[j] == Txt[i]) {
