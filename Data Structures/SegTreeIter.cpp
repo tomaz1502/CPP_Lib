@@ -3,8 +3,7 @@
 #include <functional>
 using namespace std;
 
-template<typename T>
-class SegTree { //array 0-based
+template<typename T> class SegTree { //array 0-based
 
 public :
  

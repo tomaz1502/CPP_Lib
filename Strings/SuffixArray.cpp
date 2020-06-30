@@ -9,6 +9,7 @@ using namespace std;
 struct SA {
     
     vector<int> sa, ra;
+    vector<int> lcp; // lcp[i] = lcp(sa[i], sa[i + 1])
     string S;
     int n, maxc;
 
@@ -66,14 +67,36 @@ struct SA {
 
     }
 
+    void buildLCP() {
+        lcp.resize(n);
+        int h = 0;
+        for (int i = 0; i < n; ++i) {
+            // calculate lcp[ra[i]]
+            if (ra[i] == n - 1) {
+                lcp[ra[i]] = 0;
+                h = 0;
+                continue;
+            }
+            int j = sa[ra[i] + 1];
+            while (i + h < n && j + h < n && s[i + h] == s[j + h]) h++;
+            lcp[ra[i]] = h;
+            if (h > 0) --h;
+        }
+    }
+
 };
 
 int main() {
     ios::sync_with_stdio(false);
 
     string s; cin >> s;
-    SA Sa(s);
+    SA Suff(s);
+    for (int i : Suff.sa) cout << i << " ";
+    cout << "\n";
 
-    for(int i = 1; i < (int)Sa.sa.size(); i++) cout << Sa.sa[i] << "\n";
+    Suff.buildLCP();
+    for (int i : Suff.lcp) cout << i << " ";
+    cout << "\n";
+
     return 0;
 }
