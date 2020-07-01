@@ -78,7 +78,7 @@ struct SA {
                 continue;
             }
             int j = sa[ra[i] + 1];
-            while (i + h < n && j + h < n && s[i + h] == s[j + h]) h++;
+            while (i + h < n && j + h < n && S[i + h] == S[j + h]) h++;
             lcp[ra[i]] = h;
             if (h > 0) --h;
         }
