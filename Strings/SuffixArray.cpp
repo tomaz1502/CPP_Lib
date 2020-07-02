@@ -6,7 +6,7 @@
 #include <cstring>
 using namespace std;
 
-struct SA {
+struct SuffixArray {
     
     vector<int> sa, ra;
     vector<int> lcp; // lcp[i] = lcp(sa[i], sa[i + 1])
@@ -37,7 +37,7 @@ struct SA {
         sa = newSa;
     }
     
-    SA(const string &s) {
+    SuffixArray(const string &s) {
         S = s;
         S += "$";
         n = S.size();
@@ -67,6 +67,8 @@ struct SA {
 
     }
 
+    SuffixArray() { }
+
     void buildLCP() {
         lcp.resize(n);
         int h = 0;
@@ -90,7 +92,7 @@ int main() {
     ios::sync_with_stdio(false);
 
     string s; cin >> s;
-    SA Suff(s);
+    SuffixArray Suff(s);
     for (int i : Suff.sa) cout << i << " ";
     cout << "\n";
 
