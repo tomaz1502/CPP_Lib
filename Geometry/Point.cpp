@@ -41,11 +41,10 @@ type orientation(Point P, Point Q, Point R) { return (Q - P) * (R - Q); }
 Point perp(Point P) { return Point(-P.y, P.x); }
 
 void sort_by_angle(vector<Point>& pts, Point fix) {
-    const long long inf = 1e18;
     auto compare = [&] (Point p1, Point p2) {
         if (p1.x >= fix.x && p2.x < fix.x) return true;
         if (p2.x >= fix.x && p1.x < fix.x) return false;
-        Point bottom = Point(fix.x, -inf);
+        Point bottom = Point(fix.x, -1); // take care!
 
         type a1 = (bottom - fix) ^ (fix - p1);
         a1 /= abs(bottom - fix);
