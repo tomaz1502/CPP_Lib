@@ -4,7 +4,7 @@
 #include <iomanip>
 
 template<typename T>
-struct Matrix : public std::vector<std::vector<T>> {
+struct Matrix : std::vector<std::vector<T>> {
 
     T neutral;
 
@@ -66,7 +66,7 @@ struct Matrix : public std::vector<std::vector<T>> {
 };
 
 template<typename T>
-struct SquareMatrix: public Matrix<T> {
+struct SquareMatrix: Matrix<T> {
     SquareMatrix(int len) : Matrix<T>(len, len) {}
     SquareMatrix(std::initializer_list<std::vector<T>> il) : Matrix<T>(il) {
         assert(this->rows == this->cols);
