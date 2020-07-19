@@ -5,9 +5,7 @@
 
 template<typename T>
 struct Matrix : std::vector<std::vector<T>> {
-
     T neutral;
-
     int rows;
     int cols;
 
@@ -51,7 +49,7 @@ struct Matrix : std::vector<std::vector<T>> {
     }
 
     Matrix<T> neg() {
-        Matrix<T> ret(this);
+        Matrix<T> ret(*this);
 
         for (int i = 0; i < this->size(); i++) {
             for (int j = 0; j < (*this)[i].size(); j++) ret[i][j] *= -1;
@@ -64,6 +62,15 @@ struct Matrix : std::vector<std::vector<T>> {
     void operator-=(Matrix<T> M) { *this = *this + M.neg(); }
     void operator*=(Matrix<T> M) { *this = *this * M; }
 };
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Matrix<T>& M) {
+    for (int i = 0; i < M.rows; i++) {
+        for (int j = 0; j < M.cols; j++) out << M[i][j] << " ";
+        out << "\n";
+    }
+    return out;
+}
 
 template<typename T>
 struct SquareMatrix: Matrix<T> {
@@ -93,7 +100,6 @@ struct SquareMatrix: Matrix<T> {
 
     void operator^=(int exp) { *this = (*this) ^ exp; }
 };
-
 
 // example usage
 // from: https://codeforces.com/gym/102644/problem/A
