@@ -29,7 +29,7 @@ struct Matrix : std::vector<std::vector<T>> {
         neutral  = _neutral;
     }
 
-    Matrix<T> operator+(const Matrix<T> &M) const {
+    Matrix<T> operator+(const Matrix<T>& M) const {
         Matrix<T> ret = Matrix(rows, cols);
         assert(rows == M.rows && cols == M.cols);
 
@@ -42,7 +42,7 @@ struct Matrix : std::vector<std::vector<T>> {
         return ret;
     }
 
-    Matrix<T> operator*(const Matrix<T> &M) const {
+    Matrix<T> operator*(const Matrix<T>& M) const {
         assert(cols == M.rows);
         Matrix<T> ret = Matrix(rows, M.cols);
 
@@ -65,6 +65,10 @@ struct Matrix : std::vector<std::vector<T>> {
         }
 
         return ret;
+    }
+
+    Matrix<T> operator-(const Matrix<T>& M) {
+        return (*this) + M.neg();
     }
 
     void operator+=(Matrix<T> M) { *this = *this + M; }
