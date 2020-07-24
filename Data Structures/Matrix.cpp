@@ -10,9 +10,18 @@ struct Matrix : std::vector<std::vector<T>> {
     int cols;
 
     Matrix() { }
-    Matrix(std::initializer_list<std::vector<T>> IL) : std::vector<std::vector<T>>(IL) { SetDims(); }
-    Matrix(std::vector<std::vector<T>>&& v) : std::vector<std::vector<T>>(v) { SetDims(); }
-    Matrix(int _rows, int _cols, T _neutral = 0) : std::vector<std::vector<T>>(_rows, std::vector<T>(_cols, _neutral)) { SetDims(_neutral); }
+
+    Matrix(std::initializer_list<std::vector<T>> IL) : std::vector<std::vector<T>>(IL) {
+        SetDims();
+    }
+
+    Matrix(std::vector<std::vector<T>>&& v) : std::vector<std::vector<T>>(v) {
+        SetDims();
+    }
+
+    Matrix(int _rows, int _cols, T _neutral = 0) : std::vector<std::vector<T>>(_rows, std::vector<T>(_cols, _neutral)) {
+        SetDims(_neutral);
+    }
 
     void SetDims(T _neutral = 0) {
         rows = this->size();
