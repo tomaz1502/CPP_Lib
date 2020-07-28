@@ -1,39 +1,36 @@
-#include <iostream>
 #include <vector>
-using namespace std;
 
-template <typename T1>
-bool next_permutation(vector<T1> &perm){ //swaps perm to it's next permutation
-	int i, k = -1, j, l;
-	for(i = 0; i<perm.size()-1; i++){
-		if(perm[i] < perm[i+1]) k = i;	//find longest non-increasing suffix
+template <typename T>
+bool next_Permutation(std::vector<T>& Perm){ //swaps Perm to it's next Permutation
+	int k = -1;
+	int size = (int) Perm.size();
+	for (int i = 0; i < size - 1; i++){
+		if (Perm[i] < Perm[i + 1])
+			k = i;	//find longest non-increasing suffix
 	}
 	
-	if(k == -1) return false; //last lexicograph permutation achieved
+	if (k == -1)
+		return false; //last lexicograph Permutation achieved
 
-	for(j = k+1; j<perm.size(); j++){
-		if(perm[j] > perm[k]) l = j;
+	int l;
+	for (int j = k + 1; j < size; j++){
+		if (Perm[j] > Perm[k])
+			l = j;
 	}
 
-	swap(perm[k], perm[l]);
+	swap(Perm[k], Perm[l]);
 
-	int pt1 = k+1, pt2 = perm.size()-1;
-	while(pt1 < pt2){
-		swap(perm[pt1], perm[pt2]);
-		pt1++;
-		pt2--;
+	int p1 = k + 1, p2 = size - 1;
+	while (p1 < p2) {
+		swap(Perm[p1], Perm[p2]);
+		p1++;
+		p2--;
 	}
 
 	return true;
 }
 
-int main(){
-	vector<int> perm = {1,2,3,4,5};
-
-	do{
-		for(int i = 0; i<perm.size(); i++) cout << perm[i] << ' ';
-		cout << '\n';
-	} while(next_permutation<int>(perm));
+int main() {
 
 	return 0;
 }
