@@ -74,16 +74,19 @@ struct Matrix : std::vector<std::vector<T>> {
     void operator+=(Matrix<T> M) { *this = *this + M; }
     void operator-=(Matrix<T> M) { *this = *this + M.neg(); }
     void operator*=(Matrix<T> M) { *this = *this * M; }
-};
 
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const Matrix<T>& M) {
-    for (int i = 0; i < M.rows; i++) {
-        for (int j = 0; j < M.cols; j++) out << M[i][j] << " ";
-        out << "\n";
+    friend std::ostream& operator<<(std::ostream& out, const Matrix<T>& M) {
+        for (int i = 0; i < M.rows; i++) {
+            for (int j = 0; j < M.cols; j++) {
+                if (j) out << " ";
+                out << M[i][j];
+            }
+            out << "\n";
+        }
+        return out;
     }
-    return out;
-}
+
+};
 
 template<typename T>
 struct SquareMatrix: Matrix<T> {
@@ -134,6 +137,7 @@ int main() {
                                 {0.0, 0.0, 1.0 - p, p},
                                 {0.0, 0.0, p, 1.0 - p}};
 
+    std::cout << Rec << "\n";
     Rec ^= (n - 1);
     // std::cout << Rec.size() << " x " << Rec[0].size() << "\n";
     // std::cout << B.size() << " x " << B[0].size() << "\n";
