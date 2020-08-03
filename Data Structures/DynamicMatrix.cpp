@@ -7,8 +7,8 @@
 
 template<typename T>
 class Matrix {
-    T** data;
     size_t rows, cols;
+    T** data;
     T neutral;
 
 public:
