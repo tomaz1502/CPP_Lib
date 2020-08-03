@@ -21,8 +21,8 @@ public :
 	void update(size_t id, T value) {
         id += sz;
         Tree[id] = op(Tree[id], value);
-        for (int i = id; i > 1; i >>= 1)
-            Tree[i >> 1] = op(Tree[i], Tree[i ^ 1]);
+        for (int i = id >> 1; i >= 1; i >>= 1)
+            Tree[i] = op(Tree[i << 1], Tree[(i << 1) | 1]);
     }
  
 	SegTree(const vector<T> &V, function<T(T,T)> op_, T neutral_) : neutral(neutral_) , op(op_) {

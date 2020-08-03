@@ -88,6 +88,15 @@ class Matrix {
     T operator()(size_t i, size_t j) {
         return data[i][j];
     }
+
+    Matrix<n_cols, n_rows, T> transpose() {
+        Matrix<n_cols, n_rows, T> result(neutral);
+        for (size_t i = 0; i < n_cols; i++) {
+            for (size_t j = 0; j < n_rows; j++)
+                result[i][j] = data[j][i];
+        }
+        return result;
+    }
 };
 
 int main() {

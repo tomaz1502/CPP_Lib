@@ -8,7 +8,7 @@ class SegTree { //Tudo 0-based
 
 public :
  
-    void build(size_t node, size_t L, size_t R, vector<T> &V) {
+    void build(size_t node, size_t L, size_t R, const vector<T>& V) {
         if (L == R) Tree[node] = V[L];
         else {
             size_t M = (L + R) / 2;
@@ -46,15 +46,15 @@ public :
 
     void update(size_t id, T val) { update(id, val, 1, 0, sz - 1); }
 
-	SegTree(const vector<T> &V, function<T(T,T)> op_, T neutral_) : neutral(neutral_) , op(op_) {
+	SegTree(const vector<T>& V, function<T(T,T)> op_, T neutral_) : neutral(neutral_) , op(op_) {
 		sz = V.size();
-		Tree = vector<T>(3 * sz);
+		Tree = vector<T>(4 * sz);
     
         build(1, 0, sz - 1, V);
     }
 
     SegTree(size_t sz_, function<T(T, T)> op_, T neutral_) : sz(sz_) , neutral(neutral_) , op(op_) {
-        Tree = vector<T>(3 * sz, neutral);
+        Tree = vector<T>(4 * sz, neutral);
     }
  
 private :
