@@ -9,8 +9,7 @@ template<size_t n_rows, size_t n_cols, typename T>
 class Matrix {
     T data[n_rows][n_cols];
     T neutral;
-    public:
-
+public:
     Matrix(T _neutral = 0) : neutral(_neutral) {}
     Matrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0) : neutral(_neutral) {
         size_t row = 0;
