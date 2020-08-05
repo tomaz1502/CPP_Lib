@@ -43,7 +43,7 @@ public:
     Matrix<n_rows, rhs_cols, T> operator*(Matrix<n_cols, rhs_cols, T>& rhs) const {
         Matrix<n_rows, rhs_cols, T> result(neutral);
         for (size_t i = 0; i < n_rows; i++) {
-            for (size_t j = 0; j < n_cols; j++) {
+            for (size_t j = 0; j < rhs_cols; j++) {
                 T val = neutral;
                 for (size_t k = 0; k < n_cols; k++)
                     val += data[i][k] * rhs[k][j];

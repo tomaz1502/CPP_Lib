@@ -46,7 +46,7 @@ struct Matrix : std::vector<std::vector<T>> {
         assert(cols == M.rows);
         Matrix<T> ret = Matrix(rows, M.cols);
 
-        for (int i = 0; i < M.rows; ++i) {
+        for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < M.cols; ++j) {
                 T c = neutral;
                 for (int k = 0; k < M.rows; ++k) c = (c + (*this)[i][k] * M[k][j]);

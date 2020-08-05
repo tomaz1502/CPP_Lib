@@ -56,7 +56,7 @@ public:
         Matrix<T> result(rows, cols, neutral);
         assert(rows == rhs.cols);
         for (size_t i = 0; i < rows; i++) {
-            for (size_t j = 0; j < cols; j++) {
+            for (size_t j = 0; j < rhs.cols; j++) {
                 T val = neutral;
                 for (size_t k = 0; k < cols; k++)
                     val += data[i][k] * rhs[k][j];
