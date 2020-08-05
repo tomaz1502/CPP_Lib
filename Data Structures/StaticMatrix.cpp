@@ -7,10 +7,12 @@
 
 template<size_t n_rows, size_t n_cols, typename T>
 class Matrix {
-    protected:
+protected:
+
     T data[n_rows][n_cols];
     T neutral;
-    public:
+
+public:
 
     Matrix(T _neutral = 0) : neutral(_neutral) {
         std::fill(*data, *data + n_rows * n_cols, neutral);
