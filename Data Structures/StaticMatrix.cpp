@@ -108,16 +108,16 @@ struct SquareMatrix: public Matrix<len, len, T> {
 
     SquareMatrix(T _neutral = 0) : Matrix<len, len, T>(_neutral) {}
     SquareMatrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0) : Matrix<len, len, T>(IL, _neutral) { }
- 
-    SquareMatrix<len, T> Identity() {
-        SquareMatrix Id(this->neutral);
+
+    static SquareMatrix<len, T> Identity(T neutral) {
+        SquareMatrix Id(neutral);
         for (size_t i = 0; i < len; i++)
             Id[i][i] = 1;
         return Id;
     }
 
     SquareMatrix<len, T> operator^(int64_t exp) {
-        Matrix<len, len, T> result = Identity();
+        Matrix<len, len, T> result = Identity(this->neutral);
         Matrix<len, len, T> tmp = *this;
 
         while (exp > 0) {
