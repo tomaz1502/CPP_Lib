@@ -10,7 +10,6 @@ class Matrix {
     protected:
     T data[n_rows][n_cols];
     T neutral;
-
     public:
 
     Matrix(T _neutral = 0) : neutral(_neutral) {
