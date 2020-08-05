@@ -7,11 +7,16 @@
 
 template<size_t n_rows, size_t n_cols, typename T>
 class Matrix {
+    protected:
     T data[n_rows][n_cols];
     T neutral;
+
     public:
 
-    Matrix(T _neutral = 0) : neutral(_neutral) {}
+    Matrix(T _neutral = 0) : neutral(_neutral) {
+        std::fill(*data, *data + n_rows * n_cols, neutral);
+    }
+
     Matrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0) : neutral(_neutral) {
         size_t row = 0;
         for (const std::vector<T>& vec: IL) {
@@ -99,27 +104,43 @@ class Matrix {
     }
 };
 
+template<size_t len, typename T>
+struct SquareMatrix: public Matrix<len, len, T> {
+
+    SquareMatrix(T _neutral = 0) : Matrix<len, len, T>(_neutral) {}
+    SquareMatrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0) : Matrix<len, len, T>(IL, _neutral) { }
+ 
+    SquareMatrix<len, T> Identity() {
+        SquareMatrix Id(this->neutral);
+        for (size_t i = 0; i < len; i++)
+            Id[i][i] = 1;
+        return Id;
+    }
+
+    SquareMatrix<len, T> operator^(int64_t exp) {
+        Matrix<len, len, T> result = Identity();
+        Matrix<len, len, T> tmp = *this;
+
+        while (exp > 0) {
+            if (exp & 1) result = result * tmp;
+            tmp *= tmp;
+            exp >>= 1;
+        }
+
+        return static_cast<SquareMatrix&>(result);
+    }
+
+    void operator^=(int64_t exp) {
+        *this = (*this) ^ exp;
+    }
+
+};
+
 int main() {
-    Matrix<2, 2 ,int> M = {{1, 2}, {3, 4}};
-    Matrix<2, 2, int> N = {{5, 6}, {7, 8}};
-    Matrix<2, 2, int> O = M + N;
 
-    Matrix<2, 2, int> P = O;
-    P += O;
-
-    Matrix<2, 2, int> Q = P - M;
-    Matrix<2, 2, int> R = Q * O;
-    Matrix<2, 2, int> S = R;
-    S *= M;
-    Matrix<2, 2, int> T = -S;
-
-    std::cout << "M\n" << M << "\n";
-    std::cout << "N\n" << N << "\n";
-    std::cout << "O\n" << O << "\n";
-    std::cout << "P\n" << P << "\n";
-    std::cout << "Q\n" << Q << "\n";
-    std::cout << "R\n" << R << "\n";
-    std::cout << "S\n" << S << "\n";
-    std::cout << "T\n" << T << "\n";
+    SquareMatrix<2,int> M = {{1,2},{3,4}};
+    M = M ^ 3;
+    std::cout << M << "\n";
+    
     return 0;
 }
