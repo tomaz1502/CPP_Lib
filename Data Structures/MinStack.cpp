@@ -3,19 +3,25 @@
 using namespace std;
 
 struct Stack {
-    int v[10000];
+    static const int MAX_SIZE = 1e5 + 10;
+
+    int v[MAX_SIZE];
     int p, minE;
 
-    Stack() { p = 0; }
+    Stack() : p(0) { }
 
     void push(int x) {
-        if(p == 0){
+        if (p == MAX_SIZE - 1) {
+            cout << "Stack is FULL!\n";
+            assert(false);
+        }
+        if (p == 0) {
             v[p++] = x;
             minE = x;
         }
-        else{
-            if(x > minE) v[p++] = x;
-            else{
+        else {
+            if (x > minE) v[p++] = x;
+            else {
                 v[p++] = 2*x - minE;
                 minE = x;
             }
@@ -23,16 +29,21 @@ struct Stack {
     }
 
     int pop() {
-        if(p == 0) cout << "Empty!\n", assert(false);
+        if (p == 0) {
+            cout << "Empty!\n";
+            assert(false);
+        }
         p--;
-        if(v[p] < minE){
-            minE = 2*minE - v[p];
+        if (v[p] < minE) {
+            minE = 2 * minE - v[p];
             return minE;
         }
         else return v[p];
     }
 
-    int MIN() { return minE; }
+    int MIN() {
+        return minE;
+    }
 };
 
 int main() {
