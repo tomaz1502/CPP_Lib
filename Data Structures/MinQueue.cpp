@@ -3,20 +3,16 @@
 #include <iostream>
 
 template < typename T > // T must have operator< defined
-class minQueue{
-    
+class minQueue {
     using minStack = std::stack< std::pair < T , T > >; // second coordinate: smallest element from current to bottom
 
 private:
-
     minStack in, out;
 
 public:
-
     minQueue() { }
 
     void push(T x) {
-
         if(in.empty()) {
             in.emplace(x, x);
         }
@@ -25,17 +21,15 @@ public:
             T m = in.top().second; // previous minimum
             in.emplace(x, std::min(x, m));
         }
-
     }
 
-    T pop(){
-        if(out.empty()){
+    T pop() {
+        if (out.empty()) {
 
-            while(!in.empty()) { // transfers everything to out stack (inverting their order)
-
+            while (!in.empty()) { // transfers everything to out stack (inverting their order)
                 std::pair<T, T> p = in.top(); in.pop();
                     
-                if(out.empty()) {
+                if (out.empty()) {
                     out.emplace(p.first, p.first);
                 }
                 
@@ -44,23 +38,18 @@ public:
                     out.emplace(p.first, std::min(p.first, m));
                 }
             }
-
         }
 
-        if(out.empty()) {
-        
+        if (out.empty()) {
             std::cout << "Error! Queue is empty.\n";
             assert(false);
-        
         }
         
         T x = out.top().first; out.pop();
-     
         return x;
     }
 
     T getMin() {
-
         if(in.empty() and out.empty()) {
             std::cout << "Can't get minimum: Queue is empty.\n";
             assert(false);
@@ -74,9 +63,8 @@ public:
 
 };
 
-int main(){
-
-    minQueue< char > MQ;
+int main() {
+    minQueue<char> MQ;
     
     MQ.push('a');
     MQ.push('x');
