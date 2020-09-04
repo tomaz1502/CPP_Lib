@@ -3,7 +3,7 @@
 using namespace std;
 
 template<typename T>
-class SegTree{ //Array is 0-based, Tree is 1 based
+class SegTree { //Array is 0-based, Tree is 1 based
 	int size;
 	vector<T> Tree, Lazy;
 
@@ -53,7 +53,7 @@ class SegTree{ //Array is 0-based, Tree is 1 based
 
 		if (idL > r || idR < l) return Tree[idT];
 
-		int m = (l+r)/2;
+		int m = (l + r) / 2;
 
 		T res_l = update(2 * idT, l, m, idL, idR, value);
 		T res_r = update(2 * idT + 1, m + 1, r, idL, idR, value);
@@ -95,8 +95,6 @@ int main() {
 			cout << st.query(l,r) << "\n";
 		}
 	}
-
-
 
 	return 0;
 }
