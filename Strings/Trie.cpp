@@ -1,37 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+template<typename T>
 struct Trie {
-	vector< vector<int> > T;
-	vector<bool> endOfWord;
-	int proxNode = 1;
+	vector<vector<int>> Tree;
+	vector<bool> end_word;
+	int nxt = 1;
+    T alph_base;
 
-	Trie(int maxNodes, int alphabetSize) { //maxNodes is the maximum amount of letters allowed
-		T = vector< vector<int> >(maxNodes, vector<int>(alphabetSize, 0));
-		endOfWord = vector<bool>(maxNodes, false);
+	Trie(int max_nodes, int alph_size = 26, int _alp_base = 'a') { //maxNodes is the maximum amount of letters allowed
+		Tree = vector(max_nodes, vector(alph_size, 0));
+		end_word = vector(max_nodes, false);
 	}
 
-	void insert(string s) {
+	void insert(const vector<T>& S) {
 		int at = 1;
-		for(int i = 0; i < (int)s.length(); ++i) {
-			int let = s[i] - 'a'; //base letter of the alphabet
-			if(T[at][let] == 0){
-				T[at][let] = ++this->proxNode;				
-			}
-			at = T[at][let];
-			if(i == (int)s.length() - 1) endOfWord[at] = true;
-		}
+        for (const T& s: S) {
+            int index = s - alph_base;
+            if (Tree[at][index] == 0)
+                Tree[at][index] = ++nxt;
+            at = Tree[at][index];
+        }
+        end_word[at] = true;
 	}
 
-	bool search(string s) { // retorna falso se s é só o prefixo de alguém que tá na trie, e não uma palavra inteira
-		int at = 1;
-		for(int i = 0; i < (int)s.length(); ++i) {
-			int let = s[i] - 'a';
-			if(T[at][let] == 0) return false;
-			at = T[at][let];
-		}
-
-		return endOfWord[at];
-	}
-
+    void insert(const string& s) {
+        vector<char> sc(s.begin(), s.end());
+        insert(sc);
+    }
 };
+
+int main() {
+
+}
