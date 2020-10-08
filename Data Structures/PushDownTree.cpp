@@ -7,8 +7,8 @@ using namespace std;
 
 template<typename T>
 class SegTree { //Array is 0-based, Tree is 1 based
-	int size;
-	vector<T> Lazy;
+    int size;
+    vector<T> Lazy;
     function<T(T,T)> operation;
     T neutral;
 
@@ -20,22 +20,22 @@ class SegTree { //Array is 0-based, Tree is 1 based
         }
     }
 
-	void update(int node, int l, int r, int idL, int idR, T value) {
+    void update(int node, int l, int r, int idL, int idR, T value) {
         if (l != r)
             push_down(node);
 
-		if (idL <= l && r <= idR) {
-			Lazy[node] = operation(value, Lazy[node]);
-			return;
-		}
+	if (idL <= l && r <= idR) {
+		Lazy[node] = operation(value, Lazy[node]);
+		return;
+	}
 
-		if (idL > r || idR < l) return;
+	if (idL > r || idR < l) return;
 
-		int m = (l + r) / 2;
+	int m = (l + r) / 2;
 
         update(2 * node, l, m, idL, idR, value);
-		update(2 * node + 1, m + 1, r, idL, idR, value);
-	}
+        update(2 * node + 1, m + 1, r, idL, idR, value);
+    }
 
     T get(int id, int node, int L, int R) {
         if (L == R)
@@ -55,9 +55,9 @@ public:
         Lazy = vector<T>(4 * size, neutral);
     }
 
-	void update(int idL, int idR, T value) {
-		update(1, 0, size - 1, idL, idR, value);
-	}
+    void update(int idL, int idR, T value) {
+	update(1, 0, size - 1, idL, idR, value);
+    }
 
     T get(int id) {
         return get(id, 1, 0, size - 1);
