@@ -44,14 +44,13 @@ class SegTree { //Array is 0-based, Tree is 1 based
 
 
 	T update(int idT, int l, int r, int idL, int idR, T value) {
-		propagate(idT, l, r);
-
 		if (idL <= l && r <= idR) {
 			Lazy[idT] += value;
             propagate(idT, l, r);
 			return Tree[idT];
 		}
 
+		propagate(idT, l, r);
 		if (idL > r || idR < l) return Tree[idT];
 
 		int m = (l + r) / 2;
