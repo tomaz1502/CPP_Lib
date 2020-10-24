@@ -48,6 +48,7 @@ class SegTree { //Array is 0-based, Tree is 1 based
 
 		if (idL <= l && r <= idR) {
 			Lazy[idT] += value;
+            propagate(idT, l, r);
 			return Tree[idT];
 		}
 
