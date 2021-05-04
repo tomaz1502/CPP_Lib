@@ -60,8 +60,10 @@ template<int Modulus, typename Op> struct modint {
         return *this;
     }
 
+    modint inverse() { return *this ^ (Modulus - 2); }
+
     modint operator/= (modint other) {
-        modint invOther = other ^ (Modulus - 2);
+        modint invOther = other.inverse();
         *this *= invOther;
         return *this;
     }

@@ -42,9 +42,15 @@ struct MO {
             long long sum = 0;
             int L = 0, R = 0;
             for (auto& q: block) {
-                while (R <= q.r) {
+
+                while (R < q.r) {
                     sum += a[R];
                     R++;
+                }
+
+                while (L > q.l) {
+                    L--;
+                    sum += a[L];
                 }
 
                 while (L < q.l) {
@@ -52,10 +58,11 @@ struct MO {
                     L++;
                 }
 
-                while (L > q.l) {
-                    L--;
-                    sum += a[L];
+                while (R > q.r) {
+                    sum -= a[R];
+                    R--;
                 }
+
                 answer[q.i] = sum;
             }
         }
