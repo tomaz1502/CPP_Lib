@@ -2,54 +2,50 @@
 #include <vector>
 using namespace std;
 
-const int N = 1e5 + 10;
-vector<int> G[N];
 
-struct LCA {
-    int tam, t, lg;
-    vector< vector< int > > lift;
-    vector< int > disc, fin, dep;
+namespace LCA {
+    const int N = 1e5 + 10;
+
+    int sz, t, lg;
+    vector<vector<int>> lift;
+    vector<int> Lv, Rv, dep;
+    vector<int> G[N];
 
     void dfs(int v, int p, int d = 0) {
         dep[v] = d;
-        disc[v] = t++;
-        for(int u : G[v]) {
-            if(u == p) continue;
+        Lv[v] = t++;
+        for (int u : G[v]) if (u != p) {
             dfs(u, v, d + 1);
             lift[u][0] = v;
         }
-        fin[v] = t++;
+        Rv[v] = t++;
     }
 
-    LCA(int tam_, int lg_ = 20, int root = 0) {
-        tam = tam_; lg = lg_;
+    void build(int sz_, int lg_ = 20, int root = 0) {
+        sz = sz_; lg = lg_;
         t = 0;
-        lift = vector< vector< int > >(tam, vector<int>(lg));
-        disc = fin = dep = vector< int >(tam);
+        lift = vector< vector< int > >(sz, vector<int>(lg));
+        Lv = Rv = dep = vector< int >(sz);
 
         dfs(root,-1);
         lift[root][0] = root;
 
-        for(int i = 1; i < lg; ++i) {
-            for(int v = 0; v < tam; ++v) {
+        for (int i = 1; i < lg; ++i) {
+            for (int v = 0; v < sz; ++v) {
                 lift[v][i] = lift[lift[v][i-1]][i-1];
             }
         }
     }
 
-    int dist(int u, int v) {
-        return dep[u] + dep[v] - 2 * dep[lca(u,v)];
-    }
-
-    bool isAncestor(int u, int v) { return disc[u] < disc[v] and fin[u] > fin[v]; }
+    bool isAncestor(int u, int v) { return Lv[u] <= Lv[v] and Rv[u] >= Rv[v]; }
 
     int lca(int u, int v) {
         if(u == v) return u;
 
-        if(isAncestor(u,v)) return u;
-        if(isAncestor(v,u)) return v;
+        if (isAncestor(u,v)) return u;
+        if (isAncestor(v,u)) return v;
 
-        for(int x = lg - 1; x >= 0; x--) {
+        for (int x = lg - 1; x >= 0; x--) {
             if(!isAncestor(lift[u][x], v)) {
                 u = lift[u][x];
             }
@@ -57,6 +53,9 @@ struct LCA {
         return lift[u][0];
     }
 
+    int dist(int u, int v) {
+        return dep[u] + dep[v] - 2 * dep[lca(u,v)];
+    }
 };
 
 int main() {
@@ -65,16 +64,16 @@ int main() {
 
     for(int i = 0; i<n-1; i++) {
         int u, v; cin >> u >> v; --u; --v;
-        G[u].push_back(v);
-        G[v].push_back(u);
+        LCA::G[u].push_back(v);
+        LCA::G[v].push_back(u);
     }
 
-    LCA L(n);
+    LCA::build(n);
 
     int q; cin >> q;
     while(q--) {
         int u, v; cin >> u >> v; u--; v--;
-        cout << L.lca(u,v) + 1 << '\n';
+        cout << LCA::lca(u,v) + 1 << '\n';
     }
 
     return 0;
