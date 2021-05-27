@@ -39,7 +39,7 @@ namespace LCA {
 
     bool isAncestor(int u, int v) { return Lv[u] <= Lv[v] and Rv[u] >= Rv[v]; }
 
-    int lca(int u, int v) {
+    int query(int u, int v) {
         if(u == v) return u;
 
         if (isAncestor(u,v)) return u;
@@ -54,7 +54,7 @@ namespace LCA {
     }
 
     int dist(int u, int v) {
-        return dep[u] + dep[v] - 2 * dep[lca(u,v)];
+        return dep[u] + dep[v] - 2 * dep[query(u,v)];
     }
 };
 
@@ -73,7 +73,7 @@ int main() {
     int q; cin >> q;
     while(q--) {
         int u, v; cin >> u >> v; u--; v--;
-        cout << LCA::lca(u,v) + 1 << '\n';
+        cout << LCA::query(u,v) + 1 << '\n';
     }
 
     return 0;
