@@ -1,20 +1,18 @@
-#include <vector>
 #include <cassert>
+#include <vector>
 
-int LIS(const std::vector< int > &a) { // Longest non-decreasing: troca lower por upper
-    int n = a.size(), lim = 1e8;
-    std::vector<int> d(n+1, lim);
-    for (int j = 0; j < n; j++) {
-        *std::lower_bound(d.begin(), d.end(), a[j]) = a[j];
-    }
-    for(int j = 0; j<=n; j++) {
-        if(d[j] == lim) return j;
-    }
-    assert(false);
-    return -1;
-}
+// Longest non-decreasing: trocar lower por upper
+int LIS(const std::vector<int> &a) {
+  int n = a.size(), lim = 1e8;
+  std::vector<int> d(n + 1, lim);
 
-int main() {
+  for (int j = 0; j < n; j++)
+    *std::lower_bound(d.begin(), d.end(), a[j]) = a[j];
 
-    return 0;
+  for (int j = 0; j <= n; j++)
+    if (d[j] == lim)
+      return j;
+
+  assert(false);
+  return -1;
 }
