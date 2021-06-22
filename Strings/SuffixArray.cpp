@@ -1,8 +1,6 @@
 #include <algorithm>
-#include <cstring>
 #include <iostream>
 #include <numeric>
-#include <string>
 #include <vector>
 using namespace std;
 
@@ -13,57 +11,48 @@ struct SuffixArray {
   string S;
   int n, maxc;
 
-  int rank(int suff_index) {
-    if (suff_index < n)
-      return ra[suff_index];
-    else
-      return 0;
-  }
-
-  void countingSort(int k) {
-    vector<int> newSa(n), count(maxc, 0);
+  vector<int> countingSort(int k) {
+    vector<int> sorted(n), count(maxc, 0);
     for (int i = 0; i < n; i++)
-      count[rank(i + k)]++;
+      count[ra[i + k]]++;
 
     int sum = 0;
-    for (int i = 0; i < maxc; i++) {
-      int temp = count[i];
-      count[i] = sum;
-      sum += temp;
-    }
+    transform(count.begin(), count.end(), count.begin(), [&](int x) {
+      sum += x;
+      return sum - x;
+    });
 
     for (int i = 0; i < n; i++) {
-      newSa[count[rank(sa[i] + k)]] =
-          sa[i]; // quantos caras tem rank menor que eu?
-      count[rank(sa[i] + k)]++;
+      sorted[count[ra[sa[i] + k]]] = sa[i];
+      count[ra[sa[i] + k]]++;
     }
-
-    sa = newSa;
+    return sorted;
   }
 
-  SuffixArray(const string &s) {
-    S = s;
+  SuffixArray(const string &&_S) {
+    SuffixArray(static_cast<const string &>(_S));
+  }
+
+  SuffixArray(const string &_S) : S(_S) {
     S += "$";
     n = S.size();
-    maxc = max(n, 300);
+    maxc = max(n, 260);
 
-    ra.resize(n);
+    ra = vector<int>(S.begin(), S.end());
+    ra.insert(ra.end(), n, 0);
+
     sa.resize(n);
-
-    for (int i = 0; i < n; i++)
-      ra[i] = (int)S[i];
     iota(sa.begin(), sa.end(), 0);
-
     for (int k = 1; k < n; k <<= 1) {
-      countingSort(k);
-      countingSort(0);
+      sa = countingSort(k);
+      sa = countingSort(0);
 
       vector<int> newRa(n);
       newRa[sa[0]] = 0;
       for (int i = 1; i < n; i++) {
         newRa[sa[i]] = newRa[sa[i - 1]];
-        bool diff = make_pair(rank(sa[i]), rank(sa[i] + k)) !=
-                    make_pair(rank(sa[i - 1]), rank(sa[i - 1] + k));
+        bool diff = ra[sa[i]]     != ra[sa[i - 1]] ||
+                    ra[sa[i] + k] != ra[sa[i - 1] + k];
         if (diff)
           newRa[sa[i]]++;
       }
@@ -74,13 +63,10 @@ struct SuffixArray {
     }
   }
 
-  SuffixArray() {}
-
   void buildLCP() {
     lcp.resize(n);
     int h = 0;
     for (int i = 0; i < n; ++i) {
-      // calculate lcp[ra[i]]
       if (ra[i] == n - 1) {
         lcp[ra[i]] = 0;
         h = 0;
