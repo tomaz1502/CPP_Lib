@@ -6,15 +6,12 @@ struct KMP {
 
   vector<int> lps;
   vector<vector<int>> automaton;
-  string Ptt;
+  const string& Ptt;
 
-  KMP(string _Ptt) : Ptt(_Ptt) {
+  KMP(const string& _Ptt) : Ptt(_Ptt) {
     lps.resize(Ptt.size());
-    lps[0] = 0;
     int i = 1, j = 0;
-    while (
-        i <
-        (int)Ptt.size()) { // preenche lps[i] (ja tem todos ate i-1 calculados)
+    while (i < (int) Ptt.size()) {
       if (Ptt[i] == Ptt[j]) {
         i++;
         j++;
@@ -33,7 +30,7 @@ struct KMP {
   void make_automaton() {
     int len = Ptt.size();
     automaton = vector<vector<int>>(len, vector<int>(26));
-    for (int i = 0; i <= len; ++i) {
+    for (int i = 0; i < len; ++i) {
       for (char ch = 'a'; ch <= 'z'; ch++) {
         if (i < len && ch == Ptt[i])
           automaton[i][ch - 'a'] = i + 1;
@@ -45,7 +42,7 @@ struct KMP {
     }
   }
 
-  void search(string &Txt) {
+  void search(const string& Txt) {
     int i = 0, j = 0, n = Txt.size(), m = Ptt.size();
     while (i - j <= n - m) {
       if (Ptt[j] == Txt[i]) {
@@ -70,10 +67,7 @@ int main() {
   getline(cin, Txt);
   getline(cin, Ptt);
   KMP kmp(Ptt);
-  kmp.search(Ptt, Txt);
-
-  for (auto [l, r] : v) {
-  }
+  kmp.search(Txt);
 
   return 0;
 }

@@ -7,9 +7,8 @@ template <typename T> struct Trie {
   int nxt = 1;
   T alph_base;
 
-  Trie(int max_nodes, int alph_size = 26,
-       int _alp_base =
-           'a') { // maxNodes is the maximum amount of letters allowed
+  Trie(int max_nodes, int alph_size = 26, int _alph_base = 'a')
+      : alph_base(_alph_base) {
     Tree = vector(max_nodes, vector(alph_size, 0));
     end_word = vector(max_nodes, false);
   }
