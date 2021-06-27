@@ -73,7 +73,6 @@ template <typename T> class SegTree { // Array is 0-based, Tree is 1 based
     return Tree[idT] = op_query(res_l, res_r);
   }
 
-  static T x;
   static function<T(ll, T)> default_op_range;
 public:
 
