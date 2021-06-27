@@ -1,52 +1,63 @@
 #include <iostream>
 #include <vector>
+#include <functional>
 using namespace std;
+using ll = long long;
+
 
 template <typename T> class SegTree { // Array is 0-based, Tree is 1 based
-  int size;
+  ll size;
   vector<T> Tree, Lazy;
 
-  void build(int idT, int l, int r, const vector<T> &base) {
+  T neutral_update;
+  T neutral_query;
+
+  function<T(T,T)> op_update;
+  function<T(T,T)> op_query;
+  function<T(ll,T)> op_range;
+
+  void build(ll idT, ll l, ll r, const vector<T>& base) {
     if (l == r)
       Tree[idT] = base[l];
     else {
-      int m = (l + r) / 2;
+      ll m = (l + r) / 2;
       build(idT * 2, l, m, base);
       build(idT * 2 + 1, m + 1, r, base);
-      Tree[idT] = Tree[idT * 2] + Tree[idT * 2 + 1];
+      Tree[idT] = op_query(Tree[idT * 2], Tree[idT * 2 + 1]);
     }
   }
 
-  void propagate(int idT, int l,
-                 int r) { // Lazy só funciona com soma (a principio)
-    Tree[idT] += (r - l + 1) * Lazy[idT];
+  void propagate(ll idT, ll l, ll r, bool real = false) {
+    if (!real && Lazy[idT] == neutral_update)
+      return;
+    Tree[idT] = op_update(Tree[idT], op_range(r - l + 1, Lazy[idT]));
     if (r != l) {
-      Lazy[2 * idT] += Lazy[idT];
-      Lazy[2 * idT + 1] += Lazy[idT];
+      Lazy[2 * idT] = op_update(Lazy[2 * idT], Lazy[idT]);
+      Lazy[2 * idT + 1] = op_update(Lazy[2 * idT + 1], Lazy[idT]);
     }
-    Lazy[idT] = 0;
+    Lazy[idT] = neutral_update;
   }
 
-  T query(int idT, int l, int r, int L, int R) {
+  T query(ll idT, ll l, ll r, ll L, ll R) {
     propagate(idT, l, r);
 
     if (l >= L && r <= R)
       return Tree[idT];
     if (L > r || R < l || l > r)
-      return 0; // aqui tem que ser o elemento neutro de op
+      return neutral_query;
 
-    int mid = (l + r) / 2;
+    ll mid = (l + r) / 2;
 
     T res_l = query(2 * idT, l, mid, L, R);
     T res_r = query(2 * idT + 1, mid + 1, r, L, R);
 
-    return res_l + res_r;
+    return op_query(res_l, res_r);
   }
 
-  T update(int idT, int l, int r, int idL, int idR, T value) {
+  T update(ll idT, ll l, ll r, ll idL, ll idR, T value) {
     if (idL <= l && r <= idR) {
-      Lazy[idT] += value;
-      propagate(idT, l, r);
+      Lazy[idT] = op_update(Lazy[idT], value);
+      propagate(idT, l, r, true);
       return Tree[idT];
     }
 
@@ -54,51 +65,69 @@ template <typename T> class SegTree { // Array is 0-based, Tree is 1 based
     if (idL > r || idR < l)
       return Tree[idT];
 
-    int m = (l + r) / 2;
+    ll m = (l + r) / 2;
 
     T res_l = update(2 * idT, l, m, idL, idR, value);
     T res_r = update(2 * idT + 1, m + 1, r, idL, idR, value);
 
-    return Tree[idT] = res_l + res_r;
+    return Tree[idT] = op_query(res_l, res_r);
   }
 
+  static T x;
+  static function<T(ll, T)> default_op_range;
 public:
-  SegTree(const vector<T> &base) : size((int)base.size()) {
+
+  SegTree(const vector<T>& base,
+          T _neutral_update,
+          T _neutral_query,
+          function<T(T,T)> _op_update,
+          function<T(T,T)> _op_query,
+          function<T(ll, T)> _op_range = default_op_range) {
+    size = base.size();
+    neutral_update = _neutral_update;
+    neutral_query = _neutral_query;
+    op_update = _op_update;
+    op_query = _op_query;
+    op_range = _op_range;
     Tree = vector<T>(4 * size);
-    Lazy = vector<T>(4 * size);
+    Lazy = vector<T>(4 * size, neutral_update);
     build(1, 0, size - 1, base);
   }
 
-  T query(int l, int r) { return query(1, 0, size - 1, l, r); }
+  T query(ll l, ll r) { return query(1, 0, size - 1, l, r); }
 
-  void update(int idL, int idR, T value) {
+  void update(ll idL, ll idR, T value) {
     update(1, 0, size - 1, idL, idR, value);
   }
 };
 
-int main() {
-  int n;
-  cin >> n;
-  vector<int> a(n);
-  for (int &i : a)
-    cin >> i;
+template<typename T> function<T(ll, T)> SegTree<T>::default_op_range =
+  [] (ll _, T val) { return val; };
 
-  SegTree<int> st(a);
-  int q;
-  cin >> q;
-  while (q--) {
-    int t;
+// solves -> https://codeforces.com/edu/course/2/lesson/5/2/practice/contest/279653/problem/F
+int main() {
+  ll n, m;
+  cin >> n >> m;
+  vector<ll> a(n + 1, 0);
+
+  SegTree<ll> S(a, 0, 0, [&] (ll _x, ll y) { return y; },
+                   [&] (ll x, ll y) { return x + y; },
+                   [&] (ll r, ll val) { return r * val; });
+  while (m--) {
+    ll t;
     cin >> t;
     if (t == 1) {
-      int l, r, v;
+      ll l, r, v;
       cin >> l >> r >> v;
-      st.update(l, r, v);
+      S.update(l, r - 1, v);
     } else {
-      int l, r;
+      ll l, r;
       cin >> l >> r;
-      cout << st.query(l, r) << "\n";
+      cout << S.query(l, r - 1) << "\n";
     }
   }
 
   return 0;
 }
+
+
