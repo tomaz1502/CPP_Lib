@@ -1,24 +1,25 @@
-// stolen from https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
-#include <vector>
+// stolen from
+// https://github.com/bqi343/USACO/blob/master/Implementations/content/graphs%20(12)/Trees%20(10)/HLD%20(10.3).h
 #include <algorithm>
 #include <functional>
+#include <vector>
 using namespace std;
 using ll = long long;
 
 #define ALL(v) v.begin(), v.end()
 
-template <typename T> class SegTree { // Array is 0-based, Tree is 1 based
+template <typename T> struct SegTree { // Array is 0-based, Tree is 1 based
   ll size;
   vector<T> Tree, Lazy;
 
   T neutral_update;
   T neutral_query;
 
-  function<T(T,T)> op_update;
-  function<T(T,T)> op_query;
-  function<T(ll,T)> op_range;
+  function<T(T, T)> op_update;
+  function<T(T, T)> op_query;
+  function<T(ll, T)> op_range;
 
-  void build(ll idT, ll l, ll r, const vector<T>& base) {
+  void build(ll idT, ll l, ll r, const vector<T> &base) {
     if (l == r)
       Tree[idT] = base[l];
     else {
@@ -76,13 +77,9 @@ template <typename T> class SegTree { // Array is 0-based, Tree is 1 based
   }
 
   static function<T(ll, T)> default_op_range;
-public:
 
-  SegTree(const vector<T>& base,
-          T _neutral_update,
-          T _neutral_query,
-          function<T(T,T)> _op_update,
-          function<T(T,T)> _op_query,
+  SegTree(const vector<T> &base, T _neutral_update, T _neutral_query,
+          function<T(T, T)> _op_update, function<T(T, T)> _op_query,
           function<T(ll, T)> _op_range = default_op_range) {
     size = base.size();
     neutral_update = _neutral_update;
@@ -102,54 +99,67 @@ public:
   }
 };
 
-template<int SZ, bool VALS_IN_EDGES> struct HLD { 
-	int N; vector<vector<int>> adj;
-	int par[SZ], root[SZ], depth[SZ], sz[SZ], ti;
-	int pos[SZ]; vector<int> rpos; // rpos not used, but could be useful
-	void dfsSz(int x) { 
-		sz[x] = 1; 
-		for (auto& y: adj[x]) {
-			par[y] = x; depth[y] = depth[x]+1;
-			adj[y].erase(find(ALL(adj[y]),x)); // remove parent from adj list
-			dfsSz(y); sz[x] += sz[y];
-			if (sz[y] > sz[adj[x][0]]) swap(y,adj[x][0]);
-		}
-	}
-	void dfsHld(int x) {
-		pos[x] = ti++; rpos.push_back(x);
-		for (const auto& y: adj[x]) {
-			root[y] = (y == adj[x][0] ? root[x] : y);
-			dfsHld(y);
+template<typename T> function<T(ll, T)> SegTree<T>::default_op_range =
+  [] (ll _, T val) { return val; };
+
+template <int SZ, bool VALS_IN_EDGES, typename T> struct HLD {
+  vector<vector<int>> adj;
+  int N, par[SZ], root[SZ], depth[SZ], sz[SZ], pos[SZ], ti;
+  vector<int> rpos; // rpos not used, but could be useful
+  void dfsSz(int x) {
+    sz[x] = 1;
+    for (auto &y : adj[x]) {
+      par[y] = x;
+      depth[y] = depth[x] + 1;
+      adj[y].erase(find(ALL(adj[y]), x)); // remove parent from adj list
+      dfsSz(y);
+      sz[x] += sz[y];
+      if (sz[y] > sz[adj[x][0]])
+        swap(y, adj[x][0]);
     }
-	}
-	SegTree<ll> tree; // segtree for sum
-	HLD(int _N, int R = 0, vector<vector<int>> _adj = {}, SegTree<ll> _tree = {})
-     : adj(_adj), N(_N), tree(_tree) {
-		par[R] = depth[R] = ti = 0; dfsSz(R); 
-		root[R] = R; dfsHld(R); 
-	}
-	int lca(int x, int y) {
-		for (; root[x] != root[y]; y = par[root[y]])
-			if (depth[root[x]] > depth[root[y]]) swap(x,y);
-		return depth[x] < depth[y] ? x : y;
-	}
-	/// int dist(int x, int y) { // # edges on path
-	/// 	return depth[x]+depth[y]-2*depth[lca(x,y)]; }
-	template <class BinaryOp>
-	void processPath(int x, int y, BinaryOp op) {
-		for (; root[x] != root[y]; y = par[root[y]]) {
-			if (depth[root[x]] > depth[root[y]]) swap(x,y);
-			op(pos[root[y]],pos[y]); }
-		if (depth[x] > depth[y]) swap(x,y);
-		op(pos[x]+VALS_IN_EDGES,pos[y]); 
-	}
-	void modifyPath(int x, int y, int v) { 
-		processPath(x,y,[this,&v](int l, int r) { 
-			tree.update(l,r,v); }); }
-	ll queryPath(int x, int y) { 
-		ll res = 0; processPath(x,y,[this,&res](int l, int r) { 
-			res += tree.query(l,r); });
-		return res; }
-	void modifySubtree(int x, int v) { 
-		tree.update(pos[x]+VALS_IN_EDGES,pos[x]+sz[x]-1,v); }
+  }
+  void dfsHld(int x) {
+    pos[x] = ti++;
+    rpos.push_back(x);
+    for (const auto &y : adj[x]) {
+      root[y] = (y == adj[x][0] ? root[x] : y);
+      dfsHld(y);
+    }
+  }
+  int lca(int x, int y) {
+    for (; root[x] != root[y]; y = par[root[y]])
+      if (depth[root[x]] > depth[root[y]])
+        swap(x, y);
+    return depth[x] < depth[y] ? x : y;
+  }
+  int dist(int x, int y) { // # edges on path
+  	return depth[x]+depth[y]-2*depth[lca(x,y)]; }
+  SegTree<T> tree; // segtree for sum
+  HLD(int _N, int R = 0, vector<vector<int>> _adj = {}, SegTree<T> _tree = {})
+      : adj(_adj), N(_N), tree(_tree) {
+    par[R] = depth[R] = ti = 0;
+    dfsSz(R);
+    root[R] = R;
+    dfsHld(R);
+  }
+  template <class BinaryOp> void processPath(int x, int y, BinaryOp op) {
+    for (; root[x] != root[y]; y = par[root[y]]) {
+      if (depth[root[x]] > depth[root[y]])
+        swap(x, y);
+      op(pos[root[y]], pos[y]);
+    }
+    if (depth[x] > depth[y])
+      swap(x, y);
+    op(pos[x] + VALS_IN_EDGES, pos[y]);
+  }
+  void modifyPath(int x, int y, T v) {
+    processPath(x, y, [this, &v](int l, int r) { tree.update(l, r, v); });
+  }
+  T queryPath(int x, int y) {
+    T res = tree.neutral_query;
+    processPath(x, y, [this, &res](int l, int r) { 
+        res = tree.op_query(res, tree.query(l, r));
+    });
+    return res;
+  }
 };
