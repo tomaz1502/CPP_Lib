@@ -1,7 +1,6 @@
 #include <iostream>
 
-/*
- * A range of integers to be used in a range-based loop, equivalent to python's
+/* A range of integers to be used in a range-based loop, equivalent to python's
  * range function
  */
 template<int step = 1>
@@ -37,20 +36,17 @@ public:
     left(_left), right(_right) {}
 };
 
+const int N = 1024;
+int a[N];
+
 int main() {
+  std::ios::sync_with_stdio(false);
 
-  /* { */
-  /*   Range r(0, 3); */
-  /*   for (Range::iterator it = r.begin(); it != r.end(); ++it) { */
-  /*     const int& i = *it; */
-  /*     std::cout << i << "\n"; */
-  /*   } */
-  /* } */
-
-  int x, y;
-  std::cin >> x >> y;
-  for (const int& i: Range<>(x,y))
-    std::cout << i << "\n";
+  int n;
+  std::cin >> n;
+  
+  for (int i: Range(n))
+     std::cin >> a[i];   
 
   return 0;
 }
