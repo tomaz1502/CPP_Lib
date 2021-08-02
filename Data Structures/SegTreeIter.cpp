@@ -6,7 +6,7 @@ using namespace std;
 template <typename T> class SegTree { // array 0-based
 
 public:
-  T query(size_t l, size_t r) {
+  T query(int l, int r) {
     T res = neutral;
     l += sz;
     r += sz;
@@ -21,7 +21,7 @@ public:
     return res;
   }
 
-  void update(size_t id, T value) {
+  void update(int id, T value) {
     id += sz;
     Tree[id] = op(Tree[id], value);
     for (int i = id >> 1; i >= 1; i >>= 1)
@@ -38,13 +38,13 @@ public:
       Tree[i] = op(Tree[i << 1], Tree[(i << 1) | 1]);
   }
 
-  SegTree(size_t sz_, function<T(T, T)> op_, T neutral_)
+  SegTree(int sz_, function<T(T, T)> op_, T neutral_)
       : sz(sz_), neutral(neutral_), op(op_) {
     Tree = vector<T>(2 * sz, neutral);
   }
 
 private:
-  size_t sz;
+  int sz;
   vector<T> Tree;
   const T neutral;
   function<T(T, T)> op;
