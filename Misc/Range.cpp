@@ -13,15 +13,16 @@ private:
 
     iterator(int _val) : val(_val)  { }
 
-    bool operator!=(const iterator& rhs) {
+    bool operator!=(const iterator& rhs) const {
       if constexpr (step > 0) 
         return val < rhs.val;
       else 
         return val > rhs.val;
     } 
-    void next() { val += step; }
-    void operator++() { this->next(); }
-    int operator*() { return val; }
+
+    void operator++() { val += step; }
+
+    int operator*() const { return val; }
   };
 
   int left, right;
