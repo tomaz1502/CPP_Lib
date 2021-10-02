@@ -118,6 +118,13 @@ struct SquareMatrix : public Matrix<len, len, T> {
     return Id;
   }
 
+  SquareMatrix<len, T> operator*(SquareMatrix<len, T>& that) {
+    Matrix<len,len,T>& me = *this;
+    Matrix<len,len,T>& he = that;
+    auto result = me * he;
+    return static_cast<SquareMatrix &>(result);
+  }
+
   SquareMatrix<len, T> operator^(int64_t exp) {
     Matrix<len, len, T> result = Identity(this->neutral);
     Matrix<len, len, T> tmp = *this;
