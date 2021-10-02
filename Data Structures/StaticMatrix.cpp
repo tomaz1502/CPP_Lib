@@ -15,10 +15,16 @@ public:
     std::fill(*data, *data + n_rows * n_cols, neutral);
   }
 
-  Matrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0)
+  Matrix(std::initializer_list<std::vector<T>> IL, T _neutral = 0) {
+    *this = Matrix(std::vector<std::vector<T>>(IL), _neutral);
+  }
+
+  Matrix(std::vector<std::vector<T>> V, T _neutral = 0)
       : neutral(_neutral) {
     size_t row = 0;
-    for (const std::vector<T> &vec : IL) {
+    assert(V.size() == n_rows);
+    for (const std::vector<T> &vec : V) {
+      assert(vec.size() == n_rows);
       std::copy(vec.begin(), vec.end(), data[row]);
       row++;
     }
