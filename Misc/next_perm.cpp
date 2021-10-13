@@ -1,8 +1,8 @@
 #include <vector>
 
+// swaps Perm to it's next Permutation
 template <typename T>
-bool next_Permutation(
-    std::vector<T> &Perm) { // swaps Perm to it's next Permutation
+bool nextPermutation(std::vector<T> &Perm) {
   int k = -1;
   int size = (int)Perm.size();
   for (int i = 0; i < size - 1; i++) {
