@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// TA BUGADO, NAO USE AINDA
 template <typename T> class SparseTable {
 
 public:
