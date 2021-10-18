@@ -3,21 +3,20 @@
 using namespace std;
 using ll = long long;
 
-vector<int> is_composite;
+vector<int> min_factor;
 
-vector<ll> sieve(ll n) {
-	vector<ll> primes;
-    is_composite = vector<int>(n + 1, -1);
+vector<int> sieve(ll n) {
+  vector<int> primes;
+  min_factor = vector(n + 1, -1);
 
-	for(int i = 2; i < n; ++i) {
-        if(is_composite[i] == -1) {
-            primes.push_back(i);
-            for(int j = 2 * i; j < n; j += i) {
-                is_composite[j] = i;
-            }
-        }
-	}
+  for (int i = 2; i <= n; ++i) {
+    if (min_factor[i] == -1) {
+      primes.push_back(i);
+      for (int j = 2 * i; j <= n; j += i)
+        min_factor[j] = i;
+    }
+  }
 
-	return primes;
+  return primes;
 }
 
