@@ -5,7 +5,7 @@ using ll = long long;
 
 vector<int> min_factor;
 
-vector<int> sieve(ll n) {
+vector<int> sieve(int n) {
   vector<int> primes;
   min_factor = vector(n + 1, -1);
 
