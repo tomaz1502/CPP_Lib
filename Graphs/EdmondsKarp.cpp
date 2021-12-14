@@ -1,10 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 class EdmondsKarp {
-public:
   int V, s, t;
 
   struct edge {
@@ -15,22 +14,20 @@ public:
 
   struct resEdge {
     int id, c;
-    bool good;
+    bool real;
 
-    resEdge(int id_, int c_, bool good_) : id(id_), c(c_), good(good_) {}
+    resEdge(int id_, int c_, bool real_) : id(id_), c(c_), real(real_) {}
   };
 
   vector<vector<edge>> G;
   vector<vector<resEdge>> R;
 
   vector<resEdge> bfs() {
-
     queue<int> q;
     vector<resEdge> parent(V, resEdge(-1, -1, false));
     bool achei = false;
 
     q.push(s);
-
     while (!q.empty()) {
       int at = q.front();
       q.pop();
@@ -46,24 +43,22 @@ public:
 
         parent[v].id = at;
         parent[v].c = w;
-        parent[v].good = P.good;
+        parent[v].real = P.real;
         q.push(v);
       }
     }
 
     if (!achei)
-      return vector<resEdge>();
+      return {};
 
     vector<resEdge> path;
     int v = t;
     while (v != s) {
-
-      path.push_back(resEdge(v, parent[v].c, parent[v].good));
+      path.emplace_back(v, parent[v].c, parent[v].real);
       v = parent[v].id;
     }
 
     reverse(path.begin(), path.end());
-
     return path;
   }
 
@@ -71,9 +66,8 @@ public:
     R.clear();
     R.resize(V);
 
-    for (int i = 0; i < G.size(); i++) {
-
-      for (edge v : G[i]) {
+    for (int i = 0; i < V; i++) {
+      for (const auto& v : G[i]) {
         if (v.c - v.f)
           R[i].push_back(resEdge(v.id, v.c - v.f, true));
         if (v.f)
@@ -82,63 +76,54 @@ public:
     }
   }
 
+public:
   int computeFlow() {
     int r = 0;
-    for (edge e : G[s])
+    for (const auto& e : G[s])
       r += e.f;
     return r;
   }
 
   void printRes() {
-
     for (int i = 0; i < V; i++) {
       cout << i << ": \n";
-      for (resEdge er : R[i]) {
-        cout << "adj: " << er.id << "  capacity: " << er.c << '\n';
+      for (const auto& er : R[i]) {
+        cout << "  adj: " << er.id << "  capacity: " << er.c << '\n';
       }
     }
     cout << "\n\n\n";
   }
 
-  EdmondsKarp(const vector<vector<pair<int, int>>> &H, int s_, int t_) {
-
-    V = H.size();
-    s = s_;
-    t = t_;
-
+  EdmondsKarp(const vector<vector<pair<int, int>>> &H, int s_, int t_) : V(H.size()), s(s_), t(t_) {
+    G.resize(V);
     for (int i = 0; i < V; i++) {
-      G.push_back(vector<edge>());
       for (auto P : H[i]) {
         int u = P.first, w = P.second;
-        G[i].push_back(edge(u, w, 0));
+        G[i].emplace_back(u, w, 0);
       }
     }
 
-    while (1) {
+    while (true) {
       rebuildRes();
-      // printRes();
-      // break;
-
-      vector<resEdge> path = bfs();
+      auto path = bfs();
       if (path.empty())
         break;
 
-      int flow = 1e8;
-      for (resEdge e : path)
+      int flow = INT_MAX;
+      for (const auto& e : path)
         flow = min(flow, e.c);
 
       int v = s;
-      for (resEdge u : path) {
-        for (int i = 0; i < G[v].size(); i++) {
+      for (const auto& u : path) {
+        for (int i = 0; i < (int) G[v].size(); i++) {
           if (G[v][i].id == u.id) {
-            if (u.good)
+            if (u.real)
               G[v][i].f += flow;
             else
               G[v][i].f -= flow;
             break;
           }
         }
-
         v = u.id;
       }
     }
@@ -147,6 +132,7 @@ public:
 
 int main() {
   ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   vector<vector<pair<int, int>>> G;
   int n, m;
@@ -155,10 +141,9 @@ int main() {
   for (int i = 0; i < m; i++) {
     int u, v, w;
     cin >> u >> v >> w;
-    u--;
-    v--;
-    G[u].push_back({v, w});
-    G[v].push_back({u, w});
+    u--; v--;
+    G[u].emplace_back(v, w);
+    G[v].emplace_back(u, w);
   }
 
   EdmondsKarp EK(G, 0, n - 1);
