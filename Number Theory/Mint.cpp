@@ -71,7 +71,7 @@ template<int Modulus, typename Op> struct modint {
 };
 
 const int MOD = 998244353;
-using mint = modint< MOD, int >;
+using mint = modint< MOD, long long >;
 
 ostream &operator<< (ostream &out, mint mi) {
     return out << mi.number;
