@@ -2,31 +2,26 @@
 #include <queue>
 
 using namespace std;
-using ll = long long;
 
-const ll inf = 1e18;
+const int inf = 1e9;
+const int N = 2e5 + 10;
 
-const ll N = 2e5 + 10;
-vector<pair<ll,ll>> G[N];
+vector<pair<int,int>> G[N];
 int n;
 
-vector<ll> sssp(ll v)
+vector<int> sssp(int v)
 {
-  priority_queue<pair<ll,ll>> pq;
+  priority_queue<pair<int,int>> pq;
   pq.emplace(0,v);
-  vector<ll> dist(n, inf);
+  vector<int> dist(n, inf);
   dist[v] = 0;
 
   while (!pq.empty()) {
-    auto t = pq.top(); pq.pop();
-    ll d = t.first;
-    ll u = t.second;
+    auto [d, u] = pq.top(); pq.pop();
     d = -d;
     if (dist[u] < d)
       continue;
-    for (auto neigh: G[u]) {
-      ll u2 = neigh.first;
-      ll w = neigh.second;
+    for (auto [u2, w]: G[u]) {
       if (dist[u2] > d + w) {
         pq.emplace(-d-w, u2);
         dist[u2] = d + w;
